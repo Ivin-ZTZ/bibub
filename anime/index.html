@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Anime Stream</title>
+  <style>
+    /* Tema Gelap (Dark Theme) */
+    :root {
+      --bg-color: #121212;
+      --surface-color: #1e1e1e;
+      --surface-hover: #2a2a2a;
+      --text-main: #ffffff;
+      --text-muted: #a0a0a0;
+      --accent: #ffcc00; 
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      padding: 20px 0;
+      background-color: var(--surface-color);
+      text-align: center;
+      border-bottom: 2px solid var(--accent);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 90%;
+      margin: 40px auto;
+    }
+
+    /* Utilitas untuk sembunyikan view */
+    .hidden {
+      display: none !important;
+    }
+
+    /* --- GAYA HOME MENU --- */
+    .anime-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .anime-card {
+      background-color: var(--surface-color);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .anime-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    }
+
+    .anime-cover {
+      width: 100%;
+      height: 160px;
+      background-color: #000;
+      object-fit: cover;
+    }
+
+    .anime-info {
+      padding: 15px;
+    }
+
+    .anime-card-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .anime-card-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+    }
+
+    .episode-select {
+      width: 100%;
+      padding: 10px;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      border: 1px solid #333;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* --- GAYA PLAYER VIEW --- */
+    .btn-back {
+      background-color: var(--surface-color);
+      color: var(--text-main);
+      border: 1px solid var(--text-muted);
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .btn-back:hover {
+      background-color: var(--surface-hover);
+      border-color: var(--accent);
+    }
+
+    .player-header {
+      margin-bottom: 20px;
+    }
+
+    .player-anime-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .player-episode-title {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-top: 5px;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background-color: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    }
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header onclick="showHomeView()">
+    <h1>My Personal Stream</h1>
+  </header>
+
+  <div class="container">
+    
+    <div id="home-view">
+      <h2 style="margin-bottom: 10px;">Koleksi Anime</h2>
+      <div class="anime-grid" id="anime-container">
+        </div>
+    </div>
+
+    <div id="player-view" class="hidden">
+      <button class="btn-back" onclick="showHomeView()">← Kembali ke Menu</button>
+      
+      <div class="player-header">
+        <div id="display-anime-title" class="player-anime-title">Nama Anime</div>
+        <div id="display-episode-title" class="player-episode-title">Nama Episode</div>
+      </div>
+
+      <div class="video-wrapper">
+        <video id="main-player" controls preload="metadata">
+          <source id="video-source" src="" type="video/mp4">
+          Browser Anda tidak mendukung pemutar video ini.
+        </video>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ==========================================
+    // TEMPLATE DATA: TAMBAH ANIME BARU DI SINI
+    // ==========================================
+    const ANIME_CATALOG = [
+      {
+        id: "turn-a-gundam",
+        title: "Turn A Gundam",
+        meta: "Sci-Fi, Mecha • 1999 • Yoshiyuki Tomino",
+        cover: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&q=80", // Ganti dengan link poster/gambar bebas
+        episodes: [
+          { title: "Episode 1: Howl at the Moon", fileId: "GANTI_DENGAN_FILE_ID_EP1" },
+          { title: "Episode 2: The Coming of Age Ceremony", fileId: "GANTI_DENGAN_FILE_ID_EP2" },
+        ]
+      },
+      
+      /* --- TEMPLATE UNTUK ANIME BERIKUTNYA (Cukup hapus tanda komentar di bawah ini jika ingin menambah) ---
+      {
+        id: "anime-kedua",
+        title: "Judul Anime Lain",
+        meta: "Genre • Tahun • Studio",
+        cover: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500&q=80",
+        episodes: [
+          { title: "Episode 1: Awal Mula", fileId: "ID_DRIVE_ANIME_BARU_EP1" },
+          { title: "Episode 2: Tantangan Baru", fileId: "ID_DRIVE_ANIME_BARU_EP2" }
+        ]
+      },
+      -------------------------------------------------------------------------------------------------- */
+    ];
+
+    // Mengisi daftar anime ke halaman utama saat pertama kali dibuka
+    function renderCatalog() {
+      const container = document.getElementById('anime-container');
+      container.innerHTML = ''; // Reset container
+
+      ANIME_CATALOG.forEach((anime, animeIndex) => {
+        // Membuat opsi dropdown episode
+        let episodeOptions = `<option value="" disabled selected>Pilih Episode...</option>`;
+        anime.episodes.forEach((ep, epIndex) => {
+          episodeOptions += `<option value="${animeIndex}-${epIndex}">${ep.title}</option>`;
+        });
+
+        // Struktur HTML untuk setiap kartu anime
+        const cardHTML = `
+          <div class="anime-card">
+            <img class="anime-cover" src="${anime.cover}" alt="${anime.title}">
+            <div class="anime-info">
+              <div class="anime-card-title">${anime.title}</div>
+              <div class="anime-card-meta">${anime.meta}</div>
+              <select class="episode-select" onchange="handleEpisodeSelect(this)">
+                ${episodeOptions}
+              </select>
+            </div>
+          </div>
+        `;
+        container.innerHTML += cardHTML;
+      });
+    }
+
+    // Fungsi membaca perubahan dropdown episode
+    function handleEpisodeSelect(selectElement) {
+      if (!selectElement.value) return;
+
+      const [animeIndex, episodeIndex] = selectElement.value.split('-');
+      const selectedAnime = ANIME_CATALOG[animeIndex];
+      const selectedEpisode = selectedAnime.episodes[episodeIndex];
+
+      // Jalankan fungsi pemutar video
+      playVideo(selectedAnime.title, selectedEpisode.title, selectedEpisode.fileId);
+      
+      // Reset dropdown ke default setelah dipilih
+      selectElement.value = "";
+    }
+
+    // Fungsi beralih ke tampilan Video Player dan memutar file
+    function playVideo(animeTitle, episodeTitle, fileId) {
+      document.getElementById('display-anime-title').innerText = animeTitle;
+      document.getElementById('display-episode-title').innerText = episodeTitle;
+
+      const player = document.getElementById('main-player');
+      const source = document.getElementById('video-source');
+
+      // Mengubah target source video ke API proxy Vercel
+      source.src = `/api/stream?fileId=${fileId}`;
+      
+      // Load ulang player agar membaca source baru, lalu putar
+      player.load();
+      player.play();
+
+      // Tukar tampilan view
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('player-view').classList.remove('hidden');
+    }
+
+    // Fungsi kembali ke tampilan menu utama (Home)
+    function showHomeView() {
+      const player = document.getElementById('main-player');
+      player.pause(); // Hentikan video jika sedang berputar
+
+      document.getElementById('player-view').classList.add('hidden');
+      document.getElementById('home-view').classList.remove('hidden');
+    }
+
+    // Jalankan render katalog saat halaman selesai dimuat
+    window.onload = renderCatalog;
+  </script>
+</body>
+</html>
