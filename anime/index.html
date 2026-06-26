@@ -47,7 +47,6 @@
       margin: 40px auto;
     }
 
-    /* Utilitas untuk sembunyikan view */
     .hidden {
       display: none !important;
     }
@@ -108,21 +107,32 @@
     }
 
     /* --- GAYA PLAYER VIEW --- */
-    .btn-back {
+    .player-nav-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .btn-action {
       background-color: var(--surface-color);
       color: var(--text-main);
       border: 1px solid var(--text-muted);
       padding: 10px 20px;
       border-radius: 6px;
       cursor: pointer;
-      margin-bottom: 20px;
       font-weight: bold;
-      transition: background 0.2s;
+      transition: background 0.2s, border-color 0.2s;
     }
 
-    .btn-back:hover {
+    .btn-action:hover:not(:disabled) {
       background-color: var(--surface-hover);
       border-color: var(--accent);
+    }
+
+    .btn-action:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
 
     .player-header {
@@ -158,12 +168,19 @@
       height: 100%;
       outline: none;
     }
+
+    /* Kontrol Prev/Next di bawah video */
+    .player-controls-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
 
   <header onclick="showHomeView()">
-    <h1>My Personal Stream</h1>
+    <h1>Vexlstream</h1>
   </header>
 
   <div class="container">
@@ -175,7 +192,10 @@
     </div>
 
     <div id="player-view" class="hidden">
-      <button class="btn-back" onclick="showHomeView()">← Kembali ke Menu</button>
+      
+      <div class="player-nav-top">
+        <button class="btn-action" onclick="showHomeView()">← Kembali ke Menu</button>
+      </div>
       
       <div class="player-header">
         <div id="display-anime-title" class="player-anime-title">Nama Anime</div>
@@ -188,53 +208,80 @@
           Browser Anda tidak mendukung pemutar video ini.
         </video>
       </div>
+
+      <div class="player-controls-bottom">
+        <button id="btn-prev" class="btn-action" onclick="playPrevEpisode()">⏮ Episode Sebelumnya</button>
+        <button id="btn-next" class="btn-action" onclick="playNextEpisode()">Episode Selanjutnya ⏭</button>
+      </div>
+
     </div>
 
   </div>
 
   <script>
     // ==========================================
-    // TEMPLATE DATA: TAMBAH ANIME BARU DI SINI
+    // VARIABEL GLOBAL UNTUK TRACKING EPISODE
+    // ==========================================
+    let currentAnimeIndex = null;
+    let currentEpisodeIndex = null;
+
+    // ==========================================
+    // DATA ANIME & TEMPLATE EPISODE
     // ==========================================
     const ANIME_CATALOG = [
       {
         id: "turn-a-gundam",
         title: "Turn A Gundam",
         meta: "Sci-Fi, Mecha • 1999 • Yoshiyuki Tomino",
-        cover: "https://img.mandarake.co.jp/aucimg/7/3/3/5/0001727335.octet-stream", // Ganti dengan link poster/gambar bebas
+        cover: "https://img.mandarake.co.jp/aucimg/7/3/3/5/0001727335.octet-stream",
         episodes: [
           { title: "Episode 1: Howl at the Moon", fileId: "1cOzKMoX8ATciFq6TNdg3RPuXjpRHtLlg" },
           { title: "Episode 2: The Coming of Age Ceremony", fileId: "18ZQmBNTwpExS4Hv7M5yJwCCj6OI9JNtY" },
+          { title: "Episode 3", fileId: "" },
+          { title: "Episode 4", fileId: "" },
+          { title: "Episode 5", fileId: "" },
+          { title: "Episode 6", fileId: "" },
+          { title: "Episode 7", fileId: "" },
+          { title: "Episode 8", fileId: "" },
+          { title: "Episode 9", fileId: "" },
+          { title: "Episode 10", fileId: "" },
+          { title: "Episode 11", fileId: "" },
+          { title: "Episode 12", fileId: "" },
+          { title: "Episode 13", fileId: "" },
+          { title: "Episode 14", fileId: "" },
+          { title: "Episode 15", fileId: "" },
+          { title: "Episode 16", fileId: "" },
+          { title: "Episode 17", fileId: "" },
+          { title: "Episode 18", fileId: "" },
+          { title: "Episode 19", fileId: "" },
+          { title: "Episode 20", fileId: "" },
+          { title: "Episode 21", fileId: "" },
+          { title: "Episode 22", fileId: "" },
+          { title: "Episode 23", fileId: "" },
+          { title: "Episode 24", fileId: "" },
+          { title: "Episode 25", fileId: "" }
         ]
-      },
-      
-      /* --- TEMPLATE UNTUK ANIME BERIKUTNYA (Cukup hapus tanda komentar di bawah ini jika ingin menambah) ---
-      {
-        id: "anime-kedua",
-        title: "Judul Anime Lain",
-        meta: "Genre • Tahun • Studio",
-        cover: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500&q=80",
-        episodes: [
-          { title: "Episode 1: Awal Mula", fileId: "ID_DRIVE_ANIME_BARU_EP1" },
-          { title: "Episode 2: Tantangan Baru", fileId: "ID_DRIVE_ANIME_BARU_EP2" }
-        ]
-      },
-      -------------------------------------------------------------------------------------------------- */
+      }
     ];
 
-    // Mengisi daftar anime ke halaman utama saat pertama kali dibuka
+    // ==========================================
+    // FUNGSI-FUNGSI LOGIKA
+    // ==========================================
+
     function renderCatalog() {
       const container = document.getElementById('anime-container');
-      container.innerHTML = ''; // Reset container
+      container.innerHTML = ''; 
 
       ANIME_CATALOG.forEach((anime, animeIndex) => {
-        // Membuat opsi dropdown episode
         let episodeOptions = `<option value="" disabled selected>Pilih Episode...</option>`;
+        
         anime.episodes.forEach((ep, epIndex) => {
-          episodeOptions += `<option value="${animeIndex}-${epIndex}">${ep.title}</option>`;
+          // Hanya tampilkan opsi jika fileId sudah diisi
+          if(ep.fileId !== "") {
+            episodeOptions += `<option value="${animeIndex}-${epIndex}">${ep.title}</option>`;
+          }
         });
 
-        // Struktur HTML untuk setiap kartu anime
         const cardHTML = `
           <div class="anime-card">
             <img class="anime-cover" src="${anime.cover}" alt="${anime.title}">
@@ -251,51 +298,83 @@
       });
     }
 
-    // Fungsi membaca perubahan dropdown episode
     function handleEpisodeSelect(selectElement) {
       if (!selectElement.value) return;
 
-      const [animeIndex, episodeIndex] = selectElement.value.split('-');
-      const selectedAnime = ANIME_CATALOG[animeIndex];
-      const selectedEpisode = selectedAnime.episodes[episodeIndex];
+      const [aIndex, eIndex] = selectElement.value.split('-');
+      currentAnimeIndex = parseInt(aIndex);
+      currentEpisodeIndex = parseInt(eIndex);
 
-      // Jalankan fungsi pemutar video
-      playVideo(selectedAnime.title, selectedEpisode.title, selectedEpisode.fileId);
-      
-      // Reset dropdown ke default setelah dipilih
-      selectElement.value = "";
+      loadVideoPlayer();
+      selectElement.value = ""; // Reset dropdown
     }
 
-    // Fungsi beralih ke tampilan Video Player dan memutar file
-    function playVideo(animeTitle, episodeTitle, fileId) {
-      document.getElementById('display-anime-title').innerText = animeTitle;
-      document.getElementById('display-episode-title').innerText = episodeTitle;
+    function loadVideoPlayer() {
+      const anime = ANIME_CATALOG[currentAnimeIndex];
+      const episode = anime.episodes[currentEpisodeIndex];
 
+      // Update Teks Judul
+      document.getElementById('display-anime-title').innerText = anime.title;
+      document.getElementById('display-episode-title').innerText = episode.title;
+
+      // Update Video Player
       const player = document.getElementById('main-player');
       const source = document.getElementById('video-source');
-
-      // Mengubah target source video ke API proxy Vercel
-      source.src = `/api/stream?fileId=${fileId}`;
+      source.src = `/api/stream?fileId=${episode.fileId}`;
       
-      // Load ulang player agar membaca source baru, lalu putar
       player.load();
       player.play();
 
-      // Tukar tampilan view
+      // Update status tombol Prev & Next
+      updateNavButtons();
+
+      // Tukar tampilan
       document.getElementById('home-view').classList.add('hidden');
       document.getElementById('player-view').classList.remove('hidden');
     }
 
-    // Fungsi kembali ke tampilan menu utama (Home)
+    function updateNavButtons() {
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const anime = ANIME_CATALOG[currentAnimeIndex];
+
+      // Disable tombol "Prev" jika ini episode pertama
+      btnPrev.disabled = (currentEpisodeIndex === 0);
+
+      // Disable tombol "Next" jika ini episode terakhir ATAU episode selanjutnya belum ada fileId-nya
+      const isLastEpisode = (currentEpisodeIndex === anime.episodes.length - 1);
+      const nextEpisodeHasId = !isLastEpisode && (anime.episodes[currentEpisodeIndex + 1].fileId !== "");
+      
+      btnNext.disabled = isLastEpisode || !nextEpisodeHasId;
+    }
+
+    function playPrevEpisode() {
+      if (currentEpisodeIndex > 0) {
+        currentEpisodeIndex--;
+        loadVideoPlayer();
+      }
+    }
+
+    function playNextEpisode() {
+      const anime = ANIME_CATALOG[currentAnimeIndex];
+      if (currentEpisodeIndex < anime.episodes.length - 1) {
+        currentEpisodeIndex++;
+        loadVideoPlayer();
+      }
+    }
+
     function showHomeView() {
       const player = document.getElementById('main-player');
-      player.pause(); // Hentikan video jika sedang berputar
+      player.pause(); 
 
       document.getElementById('player-view').classList.add('hidden');
       document.getElementById('home-view').classList.remove('hidden');
+      
+      // Reset variabel
+      currentAnimeIndex = null;
+      currentEpisodeIndex = null;
     }
 
-    // Jalankan render katalog saat halaman selesai dimuat
     window.onload = renderCatalog;
   </script>
 </body>
