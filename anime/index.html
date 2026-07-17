@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vexlstream</title>
+  <style>
+    /* Tema Gelap (Dark Theme) */
+    :root {
+      --bg-color: #121212;
+      --surface-color: #1e1e1e;
+      --surface-hover: #2a2a2a;
+      --text-main: #ffffff;
+      --text-muted: #a0a0a0;
+      --accent: #ffcc00; 
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      padding: 20px 0;
+      background-color: var(--surface-color);
+      text-align: center;
+      border-bottom: 2px solid var(--accent);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 90%;
+      margin: 40px auto;
+    }
+
+    /* --- GAYA HOME MENU --- */
+    .anime-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .anime-card {
+      background: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .anime-card:hover {
+      transform: scale(1.05);
+    }
+
+    .anime-cover-wrapper {
+      width: 100%;
+      aspect-ratio: 2 / 3; /* Kotak potret proporsional anti-potong */
+      position: relative;
+      background: #0f172a;
+    }
+
+    .anime-cover-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .anime-info {
+      padding: 12px;
+    }
+
+    .anime-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    /* --- GAYA PLAYER & DETAIL VIEW --- */
+    .player-nav-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .btn-action {
+      background-color: var(--surface-color);
+      color: var(--text-main);
+      border: 1px solid var(--text-muted);
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-action:hover:not(:disabled) {
+      background-color: var(--surface-hover);
+      border-color: var(--accent);
+    }
+
+    .player-header {
+      margin-bottom: 20px;
+    }
+
+    .player-anime-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* Rasio 16:9 Cinema */
+      background-color: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    }
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      outline: none;
+    }
+
+    .player-controls-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <header onclick="navigateToHome()">
+    <h1>Vexlstream</h1>
+  </header>
+
+  <div class="container">
+    
+    <div id="view-home">
+      <h2 style="margin-bottom: 10px;">Koleksi Anime</h2>
+      <div class="anime-grid" id="anime-list-container"></div>
+    </div>
+
+    <div id="view-detail" style="display: none;">
+      <div class="player-nav-top">
+        <button class="btn-action" onclick="navigateToHome()">← Kembali ke Menu</button>
+      </div>
+      <div id="anime-detail-content" style="margin-top: 20px;"></div>
+    </div>
+
+    <div id="view-streaming" style="display: none;">
+      <div class="player-nav-top">
+        <button class="btn-action" onclick="navigateToDetail()">← Kembali ke Detail Anime</button>
+      </div>
+      
+      <div class="player-header">
+        <div id="streaming-title" class="player-anime-title">Nama Anime - Nama Episode</div>
+      </div>
+
+      <div class="video-wrapper">
+        <video id="main-player" controls preload="metadata">
+          <source id="video-source" src="" type="video/mp4">
+          Browser Anda tidak mendukung pemutar video ini.
+        </video>
+      </div>
+
+      <div class="player-controls-bottom">
+        <button id="btn-prev" class="btn-action" onclick="playPrevEpisode()">⏮ Episode Sebelumnya</button>
+        <button id="btn-next" class="btn-action" onclick="playNextEpisode()">Episode Selanjutnya ⏭</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // ==========================================
+    // VARIABEL GLOBAL UNTUK TRACKING DATA AKTIF
+    // ==========================================
+    let currentAnimeId = null;
+    let currentEpisodeIndex = null;
+
+    // ==========================================
+    // DATA ANIME & TEMPLATE EPISODE
+    // ==========================================
+    const ANIME_CATALOG = [
+      {
+        id: "turn-a-gundam",
+        title: "Turn A Gundam",
+        meta: "Sci-Fi, Mecha • 1999 • Yoshiyuki Tomino",
+        cover: "https://img.mandarake.co.jp/aucimg/7/3/3/5/0001727335.octet-stream",
+        episodes: [
+          { title: "Episode 1: Howl at the Moon", fileId: "1cOzKMoX8ATciFq6TNdg3RPuXjpRHtLlg" },
+          { title: "Episode 2: The Coming of Age Ceremony", fileId: "18ZQmBNTwpExS4Hv7M5yJwCCj6OI9JNtY" },
+          { title: "Episode 3: The Ghost of Swan", fileId: "1ECID3lyamlmbVREx5VxrbFvQXOLQqJye" },
+          { title: "Episode 4: Scar of Homing", fileId: "1eBQ47NL-xmdUBKoK9qyOOZ8oIgV0dIm2" },
+          { title: "Episode 5: Diary of Lauren", fileId: "1v_AZzEnDZCDNTb-SARoprjnO_KGr3aVL" },
+          { title: "Episode 6: The Green River", fileId: "1sTeppmSjxP89kxjkO4lWsxf5wff0veu0" },
+          { title: "Episode 7: Kihel and Diana", fileId: "1op29bauBG4jq1-l8KbdJMLFUkIp6s3iP" },
+          { title: "Episode 8: Laura's Cow", fileId: "1FTtY76kH-Y4rt8ajWh7NYc0PV2gbi19M" },
+          { title: "Episode 9: Corin's Demise", fileId: "1qFcdeyFLBNpcOxJ3OqKpU7ODCP7eIxCU" },
+          { title: "Episode 10: Visit to a Grave", fileId: "1hgo9voH-KIWZehCnzHWuO98l66XkJrvQ" },
+          { title: "Episode 11: Fall of Nocis", fileId: "1YN7cd5qypGND_Dh57MOlTyd22GP3jyhv" },
+          { title: "Episode 12: Underground Underground", fileId: "1OkX29_PtPdFk1p4WYg0VKVqXNT8OoTQQ" },
+          { title: "Episode 13: An Old Partner", fileId: "1nWz5rFvlcr3KsTC-D5LZ5yVh-tDZWNCJ" },
+          { title: "Episode 14: Separate Ways", fileId: "1klC_6vIgQqwytFKSxcwxKJq4XVKse3dC" },
+          { title: "Episode 15: Memory of Odelo", fileId: "1HMSbwRP_vyVo4NfPKwt9AsDuGBqduKuo" },
+          { title: "Episode 16: All About Turn A", fileId: "1dcom3l5FZLojzyAFkMr5vNMEzI6w4DVm" },
+          { title: "Episode 17: Dust of Blowback", fileId: "1lAWkNFrVxdxnhHrAAEXkGV5_h42QOAvJ" },
+          { title: "Episode 18: Past in the Depths", fileId: "1eQfbtp0CLD08CKyePvxl0YV77E01Fkvk" },
+          { title: "Episode 19: Sochie's War", fileId: "1fEc4fiSgEKpZy8rdB3Bj8R-cLxWwId0o" },
+          { title: "Episode 20: Visual Matchup", fileId: "1bHc5yWzFLMVTqV775vmdw0bdrkHhi0bh" },
+          { title: "Episode 21: Diana's Hard Fight", fileId: "1KwBkKNy9isOND_zYTxNN8J_Mmebkve6P" },
+          { title: "Episode 22: Harry's Disaster", fileId: "1LJhkQlSlg3b1W0sTqW7p9xBUeFnSm7vU" },
+          { title: "Episode 23: Teteth's Last Moments", fileId: "1z720cnJW-s5GgW-_Gz3hakbB3A053Ybz" },
+          { title: "Episode 24: Lauren's Scream", fileId: "1BfHRvH8e-NIWpkB1vsuqpRwjCsm62J6J" },
+          { title: "Episode 25: Willghem's Flight", fileId: "1b_1zEa-g-7pOIN1WkhCHDCD0PWUFvQu4" },
+          { title: "Episode 26: Satoru's Memory", fileId: "1DGU1JELIWiO0LC4e7NyVGIrqzrminbxB" },
+          { title: "Episode 27: Midnight Sunrise", fileId: "1A_iUtKE1MVsr2sHxwl22e167OEdv8SGM" },
+          { title: "Episode 28: Entrusted Truth", fileId: "1ksdlNq4B7Xay00LBGUXFE1YXYXQ6OIg7" },
+          { title: "Episode 29: Milisha Flying", fileId: "1nNSixP61mpXHAru07zcLJJfWKHpwcPlO" },
+          { title: "Episode 30: Setting In", fileId: "1M0QsqdHB0D-mKoDmtsOcOmDoUia2fk_e" },
+          { title: "Episode 31: To the Earth Again", fileId: "1wgFwXOS8ILYuuXBuMGpPccodWtECoriQ" },
+          { title: "Episode 32: The King of Myth", fileId: "11IAVynzZwcLcGWT6mHGEBDEE8fLQNSYk" },
+          { title: "Episode 33: Capture of Dianna", fileId: "1dkjf1V0-W2O_KzZ-GIDsCMRJBRkvIVbh" },
+          { title: "Episode 34: Fly High, Turn A", fileId: "1ZoAefNie9Uc45dn7avjjDGL1K_AWHl_F" },
+          { title: "Episode 35: Zacktrager", fileId: "1KO6DEBnaExHoF7UHiox5-45I-Nx9dLlx" },
+          { title: "Episode 36: Ghingham's Raid", fileId: "1H8F0Is2FL5cVMS4XFKWkOKfsu3m5L0w-" },
+          { title: "Episode 37: Turn X Activated", fileId: "1L4E5fgV5ID-U7yX4rhD01XBnGt64X0rC" },
+          { title: "Episode 38: God's Door", fileId: "1-RjuGlESX8GxHxMLUc_Bz8neGoLVs8-C" },
+          { title: "Episode 39: Aggressive Ghingham", fileId: "1DaVx0eLrhD64epz_LH_oIht-P5WMuCKh" },
+          { title: "Episode 40: Sea Battle", fileId: "1oGjIWiR4p6tfgJFvSRP4zDyAzyJUnlJ7" },
+          { title: "Episode 41: Conflict on the Moon", fileId: "1D3rpfV0i8K-MDoV4hK2KcXT8-k0ip6z0" },
+          { title: "Episode 42: Showdown on Turn A", fileId: "1DKKE0GbLiRO4o2ttQvbDHhgX0w8Owql6" },
+          { title: "Episode 43: Shock Wave", fileId: "1b03f3a8bnC1TuBe2bDksnIC1X8yMPqL_" },
+          { title: "Episode 44: Enemy Reborn", fileId: "1rHYQHo-NKtjFThayaRm5WsBOI4LP4N_f" },
+          { title: "Episode 45: Betrayal of Gym", fileId: "1YKcT6PNqljawg8rJ9nSqsKETyVh2vrmM" },
+          { title: "Episode 46: Back to the Future", fileId: "1eSJHpsN4hj8qTMpY5d_ZHZpCmLhaNolP" },
+          { title: "Episode 47: The Sword of Ghingham", fileId: "1nuBpjniwIafjGFkg7mEW06wI5Racnm5s" },
+          { title: "Episode 48: Return of Moonrace", fileId: "1NCYoIGGBf0LSHCIS7z3viwPCiDZo2ioI" },
+          { title: "Episode 49: Moonlight Butterfly", fileId: "17dssRlXkvOlH8ShXq1SOulCQYmbgy7uF" },
+          { title: "Episode 50: Golden Autumn", fileId: "19u0E027KbYtKf6AfodBKx5gKjr2D2gum" }
+        ]
+      },
+      {
+        id: "cowboy-bebop",
+        title: "Cowboy Bebop",
+        meta: "Space Western, Noir • 1998 • Shinichirō Watanabe",
+        cover: "https://i.ebayimg.com/images/g/qyEAAOSw4BlmgrWK/s-l1200.jpg", 
+        episodes: [
+          { title: "Session 1: Asteroid Blues", fileId: "19q3wV_rDoKkLz_VEMBaC-vCzLM6wxjqH" },
+          { title: "Session 2: Stray Dog Strut", fileId: "" },
+          { title: "Session 3: Honky Tonk Women", fileId: "" },
+          { title: "Session 4: Gateway Shuffle", fileId: "" },
+          { title: "Session 5: Ballad of Fallen Angels", fileId: "" },
+          { title: "Session 6", fileId: "" },
+          { title: "Session 7", fileId: "" },
+          { title: "Session 8", fileId: "" },
+          { title: "Session 9", fileId: "" },
+          { title: "Session 10", fileId: "" },
+          { title: "Session 11", fileId: "" },
+          { title: "Session 12", fileId: "" },
+          { title: "Session 13", fileId: "" },
+          { title: "Session 14", fileId: "" },
+          { title: "Session 15", fileId: "" },
+          { title: "Session 16", fileId: "" },
+          { title: "Session 17", fileId: "" },
+          { title: "Session 18", fileId: "" },
+          { title: "Session 19", fileId: "" },
+          { title: "Session 20", fileId: "" },
+          { title: "Session 21", fileId: "" },
+          { title: "Session 22", fileId: "" },
+          { title: "Session 23", fileId: "" },
+          { title: "Session 24", fileId: "" },
+          { title: "Session 25", fileId: "" },
+          { title: "Session 26: Blue", fileId: "" }
+        ]
+      },
+      {
+        id: "gundam-g-reco-movie-1",
+        title: "Gundam G no Reconguista Movie I: Ike! Core Fighter",
+        meta: "Sci-Fi, Mecha, Movie • 2019 • Yoshiyuki Tomino",
+        cover: "https://m.media-amazon.com/images/M/MV5BMDJlOGY4Y2UtZGJlYy00NDE3LTg3YmEtNmJlN2E1NDA0NTJmXkEyXkFqcGc@._V1_.jpg",
+        episodes: [
+          { title: "Play Movie (BD 480P)", fileId: "1Q4ZGUjC2PLD_RNxCAP2liUk8dPO_Oxyu" }
+        ]
+      }
+    ];
+
+    // ==========================================
+    // 1. FUNGSI RENDER MENU UTAMA (HOME)
+    // ==========================================
+    function renderHome() {
+      const container = document.getElementById('anime-list-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      ANIME_CATALOG.forEach(anime => {
+        container.innerHTML += `
+          <div class="anime-card" onclick="selectAnime('${anime.id}')">
+            <div class="anime-cover-wrapper">
+              <img src="${anime.cover}" alt="${anime.title}">
+            </div>
+            <div class="anime-info">
+              <div class="anime-title">${anime.title}</div>
+              <small style="color: #94a3b8;">${anime.meta.split('•')[0]}</small>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // ==========================================
+    // 2. FUNGSI NAVIGASI HALAMAN
+    // ==========================================
+    function selectAnime(animeId) {
+      currentAnimeId = animeId;
+      localStorage.setItem('lastViewedAnime', animeId);
+      localStorage.removeItem('lastViewedEpisode'); 
+      
+      showView('view-detail');
+      renderDetail(animeId);
+    }
+
+    function startStreaming(episodeIndex) {
+      currentEpisodeIndex = episodeIndex;
+      localStorage.setItem('lastViewedEpisode', episodeIndex);
+      
+      showView('view-streaming');
+      
+      const anime = ANIME_CATALOG.find(a => a.id === currentAnimeId);
+      const ep = anime.episodes[episodeIndex];
+      
+      document.getElementById('streaming-title').innerText = `${anime.title} - ${ep.title}`;
+      
+      const player = document.getElementById('main-player');
+      const videoSource = document.getElementById('video-source');
+      
+      if (player && videoSource) {
+        videoSource.src = `/api/stream?fileId=${ep.fileId}`;
+        player.load(); 
+        player.play().catch(e => console.log("Autoplay ditahan browser."));
+      }
+      
+      document.getElementById('btn-prev').style.display = episodeIndex > 0 ? 'block' : 'none';
+      document.getElementById('btn-next').style.display = episodeIndex < anime.episodes.length - 1 ? 'block' : 'none';
+    }
+
+    function showView(viewId) {
+      document.getElementById('view-home').style.display = viewId === 'view-home' ? 'block' : 'none';
+      document.getElementById('view-detail').style.display = viewId === 'view-detail' ? 'block' : 'none';
+      document.getElementById('view-streaming').style.display = viewId === 'view-streaming' ? 'block' : 'none';
+    }
+
+    // ==========================================
+    // 3. FUNGSI TOMBOL KEMBALI
+    // ==========================================
+    function navigateToHome() {
+      localStorage.clear(); 
+      currentAnimeId = null;
+      currentEpisodeIndex = null;
+      showView('view-home');
+    }
+
+    function navigateToDetail() {
+      localStorage.removeItem('lastViewedEpisode'); 
+      const player = document.getElementById('main-player');
+      if (player) player.pause(); 
+      
+      showView('view-detail');
+      renderDetail(currentAnimeId);
+    }
+
+    // ==========================================
+    // 4. RENDER KONTEN DETAIL ANIME (MIDDLE VIEW)
+    // ==========================================
+    function renderDetail(animeId) {
+      const anime = ANIME_CATALOG.find(a => a.id === animeId);
+      const container = document.getElementById('anime-detail-content');
+      if (!container) return;
+      
+      let episodesHtml = '';
+      anime.episodes.forEach((ep, index) => {
+        if (ep.fileId !== "") {
+          episodesHtml += `
+            <button class="btn-action" style="margin: 5px 0; text-align: left; width: 100%; display: block;" onclick="startStreaming(${index})">
+              ▶ ${ep.title}
+            </button>
+          `;
+        }
+      });
+
+      container.innerHTML = `
+        <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+          <div style="width: 240px; aspect-ratio: 2/3;">
+            <img src="${anime.cover}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+          </div>
+          <div style="flex: 1; min-width: 300px;">
+            <h2>${anime.title}</h2>
+            <p style="color: #e0b12d; margin-bottom: 20px;">${anime.meta}</p>
+            <h3>Daftar Episode / Putar:</h3>
+            <div style="max-height: 400px; overflow-y: auto; margin-top: 10px; padding-right: 5px;">
+              ${episodesHtml || '<p style="color:#94a3b8;">Belum ada episode yang tersedia.</p>'}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // 5. NAVIGASI EPISODE PREV / NEXT
+    // ==========================================
+    function playPrevEpisode() {
+      if (currentEpisodeIndex > 0) startStreaming(currentEpisodeIndex - 1);
+    }
+
+    function playNextEpisode() {
+      const anime = ANIME_CATALOG.find(a => a.id === currentAnimeId);
+      if (currentEpisodeIndex < anime.episodes.length - 1) startStreaming(currentEpisodeIndex + 1);
+    }
+
+    // ==========================================
+    // 6. ANTI-REFRESH LOADER
+    // ==========================================
+    window.onload = function() {
+      renderHome(); 
+      
+      const savedAnimeId = localStorage.getItem('lastViewedAnime');
+      const savedEpisodeIndex = localStorage.getItem('lastViewedEpisode');
+
+      if (savedAnimeId) {
+        currentAnimeId = savedAnimeId;
+        if (savedEpisodeIndex !== null) {
+          showView('view-streaming');
+          startStreaming(parseInt(savedEpisodeIndex));
+        } else {
+          showView('view-detail');
+          renderDetail(savedAnimeId);
+        }
+      } else {
+        showView('view-home');
+      }
+    };
+  </script>
+</body>
+</html>
