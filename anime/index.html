@@ -61,7 +61,7 @@
       padding: 20px;
     }
   
- .anime-card {
+    .anime-card {
       background: #1e293b;
       border-radius: 8px;
       overflow: hidden;
@@ -77,7 +77,7 @@
 
     .anime-cover-wrapper {
       width: 100%;
-      aspect-ratio: 2 / 3; /* Membuat ukuran pas portrait poster dan anti-potong */
+      aspect-ratio: 2 / 3;
       position: relative;
       background: #0f172a;
     }
@@ -85,7 +85,7 @@
     .anime-cover-wrapper img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* Poster akan memenuhi kotak secara proporsional */
+      object-fit: cover;
     }
 
     .anime-info {
@@ -105,22 +105,20 @@
       margin-bottom: 15px;
     }
 
-    /* ======================================================= */
-    /* KODE TAMBAHAN KHUSUS HP (TARUH DI BAWAHNYA SEPERTI INI) */
-    /* ======================================================= */
+    /* Khusus Tampilan Layar HP */
     @media (max-width: 600px) {
       .anime-grid {
-        grid-template-columns: repeat(3, 1fr); /* 3 Kolom di HP */
+        grid-template-columns: repeat(3, 1fr);
         gap: 10px;
         padding: 10px;
       }
       
       .anime-info {
-        padding: 6px; /* Perkecil jarak teks di HP agar hemat ruang */
+        padding: 6px;
       }
       
       .anime-title {
-        font-size: 12px; /* Perkecil font judul agar tidak makan tempat */
+        font-size: 12px;
       }
       
       header h1 {
@@ -186,7 +184,7 @@
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 56.25%; /* 16:9 */
+      padding-top: 56.25%;
       background-color: #000;
       border-radius: 12px;
       overflow: hidden;
@@ -202,20 +200,20 @@
       outline: none;
     }
 
-    /* Kontrol Prev/Next di bawah video */
     .player-controls-bottom {
       display: flex;
       justify-content: space-between;
       margin-top: 15px;
     }
   </style>
+
   <!-- Library Plyr Player (CSS & JS) -->
-<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 </head>
 <body>
 
-  <header onclick="showHomeView()">
+  <header onclick="navigateToHome()">
     <h1>Vexlstream</h1>
   </header>
 
@@ -223,20 +221,17 @@
     
     <div id="view-home">
       <h2 style="margin-bottom: 10px;">Koleksi Anime</h2>
-      <div class="anime-grid" id="anime-list-container">
-        </div>
+      <div class="anime-grid" id="anime-list-container"></div>
     </div>
 
     <div id="view-detail" style="display: none;">
       <div class="player-nav-top">
         <button class="btn-action" onclick="navigateToHome()">← Kembali ke Menu</button>
       </div>
-      <div id="anime-detail-content" style="margin-top: 20px;">
-        </div>
+      <div id="anime-detail-content" style="margin-top: 20px;"></div>
     </div>
 
     <div id="view-streaming" style="display: none;">
-      
       <div class="player-nav-top">
         <button class="btn-action" onclick="navigateToDetail()">← Kembali ke Detail Anime</button>
       </div>
@@ -256,7 +251,6 @@
         <button id="btn-prev" class="btn-action" onclick="playPrevEpisode()">⏮ Episode Sebelumnya</button>
         <button id="btn-next" class="btn-action" onclick="playNextEpisode()">Episode Selanjutnya ⏭</button>
       </div>
-
     </div>
 
   </div>
@@ -265,9 +259,9 @@
     // ==========================================
     // VARIABEL GLOBAL UNTUK TRACKING EPISODE
     // ==========================================
-    let currentAnimeIndex = null;
+    let currentAnimeId = null; // DIPERBAIKI: Menggunakan currentAnimeId
     let currentEpisodeIndex = null;
-    let player; // Variabel untuk menyimpan instance Plyr
+    let player = null; // Variabel simpan instance Plyr
 
     // ==========================================
     // DATA ANIME & TEMPLATE EPISODE
@@ -337,7 +331,7 @@
         meta: "Space Western, Noir • 1998 • Shinichirō Watanabe",
         cover: "https://i.ebayimg.com/images/g/qyEAAOSw4BlmgrWK/s-l1200.jpg", 
         episodes: [
-        { title: "Session 1: Asteroid Blues", fileId: "1hI13gJ0mXMzUtfLXn3KMxYTvNrWS8WZ5" },
+          { title: "Session 1: Asteroid Blues", fileId: "1hI13gJ0mXMzUtfLXn3KMxYTvNrWS8WZ5" },
           { title: "Session 2: Stray Dog Strut", fileId: "1nocE3wiBTBJRwYJdJ7EL4I14GlD49Xif" },
           { title: "Session 3: Honky Tonk Women", fileId: "1TQziccG87yT0sMle9B8DkuYpSvJF6-Xk" },
           { title: "Session 4: Gateway Shuffle", fileId: "1fOFNQJhOMHFrdPyXQhNMYLk1vaP67aIJ" },
@@ -383,7 +377,7 @@
           { title: "Play Movie (BD 480P)", fileId: "1XgmIIKH__1rnR5ofnq-DcmkMPAFF2hlG" }
         ]
       },
-     {
+      {
         id: "gundam-g-reco-movie-1",
         title: "Gundam G no Reconguista Movie I: Ike! Core Fighter",
         meta: "Sci-Fi, Mecha, Movie • 2019 • Yoshiyuki Tomino",
@@ -392,7 +386,7 @@
           { title: "Play Movie (BD 480P)", fileId: "1Q4ZGUjC2PLD_RNxCAP2liUk8dPO_Oxyu" }
         ]
       },
-            {
+      {
         id: "gundam-g-reco-movie-2",
         title: "Gundam G no Reconguista Movie II: Kanzan no Kioku",
         meta: "Sci-Fi, Mecha, Movie • 2020 • Yoshiyuki Tomino",
@@ -409,219 +403,196 @@
         episodes: [
           { title: "Play Movie (BD 480P)", fileId: "1GfWOu4j-ubtbNHYdMl6hdL3yd8fqMOYx" }
         ]
-      },
-      
+      }
     ];
 
-   
-// ==========================================
-// 1. FUNGSI RENDER MENU UTAMA (HOME)
-// ==========================================
-function renderHome() {
-  const container = document.getElementById('anime-list-container');
-  if (!container) return;
-  container.innerHTML = '';
+    // ==========================================
+    // 1. FUNGSI RENDER MENU UTAMA (HOME)
+    // ==========================================
+    function renderHome() {
+      const container = document.getElementById('anime-list-container');
+      if (!container) return;
+      container.innerHTML = '';
 
-  ANIME_CATALOG.forEach(anime => {
-    container.innerHTML += `
-      <div class="anime-card" onclick="selectAnime('${anime.id}')">
-        <div class="anime-cover-wrapper">
-          <img src="${anime.cover}" alt="${anime.title}">
-        </div>
-        <div class="anime-info">
-          <div class="anime-title">${anime.title}</div>
-          <small style="color: #94a3b8;">${anime.meta.split('•')[0]}</small>
-        </div>
-      </div>
-    `;
-  });
-}
-
-// ==========================================
-// 2. FUNGSI NAVIGASI HALAMAN (TIGA LANGKAH)
-// ==========================================
-
-// Langkah 1: Klik Anime di Home -> Pindah ke Detail
-function selectAnime(animeId) {
-  currentAnimeId = animeId;
-  localStorage.setItem('lastViewedAnime', animeId);
-  localStorage.removeItem('lastViewedEpisode'); // Hapus jejak streaming lama jika ganti judul
-  
-  showView('view-detail');
-  renderDetail(animeId);
-}
-
-// Langkah 2: Klik Episode di Detail -> Pindah ke Streaming
-function startStreaming(episodeIndex) {
-  currentEpisodeIndex = episodeIndex;
-  localStorage.setItem('lastViewedEpisode', episodeIndex);
-  localStorage.setItem('currentView', 'view-streaming');
-  
-  showView('view-streaming');
-  
-  const anime = ANIME_CATALOG.find(a => a.id === currentAnimeId);
-  const ep = anime.episodes[episodeIndex];
-  
-  // Catat riwayat tontonan (agar warna tombol berubah)
-  if (ep.fileId) {
-    localStorage.setItem(`watched_${ep.fileId}`, 'true');
-  }
-
-  document.getElementById('streaming-title').innerText = `${anime.title} - ${ep.title}`;
-  
-  const videoElement = document.getElementById('main-player');
-  const videoSource = document.getElementById('video-source');
-  
-  if (videoElement && videoSource) {
-    // 1. Tembak source stream video
-    videoSource.src = `/api/stream?fileId=${ep.fileId}`;
-    
-    // 2. Aktifkan / Re-inisialisasi Plyr Player Polosan
-    if (!player) {
-      player = new Plyr('#main-player', {
-        controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'captions', 'settings', 'pip', 'fullscreen'],
-        seekTime: 10
+      ANIME_CATALOG.forEach(anime => {
+        container.innerHTML += `
+          <div class="anime-card" onclick="selectAnime('${anime.id}')">
+            <div class="anime-cover-wrapper">
+              <img src="${anime.cover}" alt="${anime.title}">
+            </div>
+            <div class="anime-info">
+              <div class="anime-title">${anime.title}</div>
+              <small style="color: #94a3b8;">${anime.meta.split('•')[0]}</small>
+            </div>
+          </div>
+        `;
       });
     }
 
-    // Load video baru ke dalam Plyr
-    player.source = {
-      type: 'video',
-      sources: [
-        {
-          src: `/api/stream?fileId=${ep.fileId}`,
-          type: 'video/mp4',
-        },
-      ],
-    };
-    
-    player.play();
-  }
-  
-  document.getElementById('btn-prev').style.display = episodeIndex > 0 ? 'block' : 'none';
-  document.getElementById('btn-next').style.display = episodeIndex < anime.episodes.length - 1 ? 'block' : 'none';
-}
-
-// Fungsi bantu untuk sembunyi/munculkan halaman
-function showView(viewId) {
-  document.getElementById('view-home').style.display = viewId === 'view-home' ? 'block' : 'none';
-  document.getElementById('view-detail').style.display = viewId === 'view-detail' ? 'block' : 'none';
-  document.getElementById('view-streaming').style.display = viewId === 'view-streaming' ? 'block' : 'none';
-  
-  // SIMPAN TAMPILAN AKTIF KE MEMORI (Agar anti-refresh tetap tau posisi halaman)
-  localStorage.setItem('currentView', viewId);
-}
-
-// ==========================================
-// 3. FUNGSI TOMBOL KEMBALI
-// ==========================================
-function navigateToHome() {
-  // JANGAN PAKAI localStorage.clear() agar data "watched_" tidak terhapus!
-  localStorage.removeItem('currentAnimeId');
-  localStorage.removeItem('lastViewedEpisode');
-  
-  currentAnimeId = null;
-  currentEpisodeIndex = null;
-  showView('view-home');
-}
-
-function navigateToDetail() {
-  localStorage.removeItem('lastViewedEpisode'); // Hapus status episode aktif saja
-  const player = document.getElementById('main-player');
-  if (player) player.pause(); // Hentikan video
-  
-  showView('view-detail');
-  if (currentAnimeId) {
-    renderDetail(currentAnimeId);
-  }
-}
-
-// ==========================================
-// 4. RENDER KONTEN DETAIL ANIME (HALAMAN TENGAH)
-// ==========================================
-function renderDetail(animeId) {
-  const anime = ANIME_CATALOG.find(a => a.id === animeId);
-  const container = document.getElementById('anime-detail-content');
-  if (!container) return;
-  
-  let episodesHtml = '';
-  anime.episodes.forEach((ep, index) => {
-    
-    // Tombol episode hanya muncul jika File ID di data catalog tidak kosong
-    if (ep.fileId !== "") {
-      // 1. Cek apakah episode ini sudah pernah ditonton
-      const isWatched = localStorage.getItem(`watched_${ep.fileId}`) === 'true';
+    // ==========================================
+    // 2. FUNGSI NAVIGASI HALAMAN
+    // ==========================================
+    function selectAnime(animeId) {
+      currentAnimeId = animeId;
+      localStorage.setItem('currentAnimeId', animeId);
+      localStorage.removeItem('lastViewedEpisode');
       
-      // 2. Set warna abu-abu redup jika sudah ditonton, atau putih jika belum
-      const textStyle = isWatched 
-        ? 'color: #64748b; opacity: 0.7; font-weight: normal;' 
-        : 'color: #ffffff; font-weight: bold;';
-      
-      // 3. Set tanda centang (✓) jika sudah ditonton, atau panah (▶) jika belum
-      const prefix = isWatched ? '✓ ' : '▶ ';
+      showView('view-detail');
+      renderDetail(animeId);
+    }
 
-      // 4. Masukkan style dan prefix baru ke dalam template tombol
-      episodesHtml += `
-        <button class="btn-action" 
-                style="margin: 5px 0; text-align: left; width: 100%; display: block; ${textStyle}" 
-                onclick="startStreaming(${index})">
-          ${prefix}${ep.title}
-        </button>
+    function startStreaming(episodeIndex) {
+      currentEpisodeIndex = episodeIndex;
+      localStorage.setItem('lastViewedEpisode', episodeIndex);
+      localStorage.setItem('currentView', 'view-streaming');
+      
+      showView('view-streaming');
+      
+      const anime = ANIME_CATALOG.find(a => a.id === currentAnimeId);
+      const ep = anime.episodes[episodeIndex];
+      
+      if (ep && ep.fileId) {
+        localStorage.setItem(`watched_${ep.fileId}`, 'true');
+      }
+
+      document.getElementById('streaming-title').innerText = `${anime.title} - ${ep.title}`;
+      
+      const videoElement = document.getElementById('main-player');
+      const videoSource = document.getElementById('video-source');
+      
+      if (videoElement && videoSource) {
+        if (!player) {
+          player = new Plyr('#main-player', {
+            controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'captions', 'settings', 'pip', 'fullscreen'],
+            seekTime: 10
+          });
+        }
+
+        player.source = {
+          type: 'video',
+          sources: [
+            {
+              src: `/api/stream?fileId=${ep.fileId}`,
+              type: 'video/mp4',
+            },
+          ],
+        };
+        
+        player.play();
+      }
+      
+      document.getElementById('btn-prev').style.display = episodeIndex > 0 ? 'block' : 'none';
+      document.getElementById('btn-next').style.display = episodeIndex < anime.episodes.length - 1 ? 'block' : 'none';
+    }
+
+    function showView(viewId) {
+      document.getElementById('view-home').style.display = viewId === 'view-home' ? 'block' : 'none';
+      document.getElementById('view-detail').style.display = viewId === 'view-detail' ? 'block' : 'none';
+      document.getElementById('view-streaming').style.display = viewId === 'view-streaming' ? 'block' : 'none';
+      
+      localStorage.setItem('currentView', viewId);
+    }
+
+    // ==========================================
+    // 3. FUNGSI TOMBOL KEMBALI
+    // ==========================================
+    function navigateToHome() {
+      localStorage.removeItem('currentAnimeId');
+      localStorage.removeItem('lastViewedEpisode');
+      
+      currentAnimeId = null;
+      currentEpisodeIndex = null;
+      showView('view-home');
+    }
+
+    function navigateToDetail() {
+      localStorage.removeItem('lastViewedEpisode');
+      if (player) player.pause();
+      
+      showView('view-detail');
+      if (currentAnimeId) {
+        renderDetail(currentAnimeId);
+      }
+    }
+
+    // ==========================================
+    // 4. RENDER KONTEN DETAIL ANIME
+    // ==========================================
+    function renderDetail(animeId) {
+      const anime = ANIME_CATALOG.find(a => a.id === animeId);
+      const container = document.getElementById('anime-detail-content');
+      if (!container || !anime) return;
+      
+      let episodesHtml = '';
+      anime.episodes.forEach((ep, index) => {
+        if (ep.fileId !== "") {
+          const isWatched = localStorage.getItem(`watched_${ep.fileId}`) === 'true';
+          const textStyle = isWatched 
+            ? 'color: #64748b; opacity: 0.7; font-weight: normal;' 
+            : 'color: #ffffff; font-weight: bold;';
+          const prefix = isWatched ? '✓ ' : '▶ ';
+
+          episodesHtml += `
+            <button class="btn-action" 
+                    style="margin: 5px 0; text-align: left; width: 100%; display: block; ${textStyle}" 
+                    onclick="startStreaming(${index})">
+              ${prefix}${ep.title}
+            </button>
+          `;
+        }
+      });
+
+      container.innerHTML = `
+        <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+          <div style="width: 240px; aspect-ratio: 2/3;">
+            <img src="${anime.cover}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+          </div>
+          <div style="flex: 1; min-width: 300px;">
+            <h2>${anime.title}</h2>
+            <p style="color: #e0b12d; margin-bottom: 20px;">${anime.meta}</p>
+            <h3>Daftar Episode / Putar:</h3>
+            <div style="max-height: 400px; overflow-y: auto; margin-top: 10px; padding-right: 5px;">
+              ${episodesHtml || '<p style="color:#94a3b8;">Belum ada episode yang tersedia.</p>'}
+            </div>
+          </div>
+        </div>
       `;
     }
-  });
 
-  container.innerHTML = `
-    <div style="display: flex; gap: 30px; flex-wrap: wrap;">
-      <div style="width: 240px; aspect-ratio: 2/3;">
-        <img src="${anime.cover}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
-      </div>
-      <div style="flex: 1; min-width: 300px;">
-        <h2>${anime.title}</h2>
-        <p style="color: #e0b12d; margin-bottom: 20px;">${anime.meta}</p>
-        <h3>Daftar Episode / Putar:</h3>
-        <div style="max-height: 400px; overflow-y: auto; margin-top: 10px; padding-right: 5px;">
-          ${episodesHtml || '<p style="color:#94a3b8;">Belum ada episode yang tersedia.</p>'}
-        </div>
-      </div>
-    </div>
-  `;
-}
+    // ==========================================
+    // 5. NAVIGASI EPISODE PREV / NEXT
+    // ==========================================
+    function playPrevEpisode() {
+      if (currentEpisodeIndex > 0) startStreaming(currentEpisodeIndex - 1);
+    }
 
-// ==========================================
-// 5. NAVIGASI EPISODE PREV / NEXT
-// ==========================================
-function playPrevEpisode() {
-  if (currentEpisodeIndex > 0) startStreaming(currentEpisodeIndex - 1);
-}
+    function playNextEpisode() {
+      const anime = ANIME_CATALOG.find(a => a.id === currentAnimeId);
+      if (anime && currentEpisodeIndex < anime.episodes.length - 1) startStreaming(currentEpisodeIndex + 1);
+    }
 
-function playNextEpisode() {
-  const anime = ANIME_CATALOG.find(a => a.id === currentAnimeId);
-  if (currentEpisodeIndex < anime.episodes.length - 1) startStreaming(currentEpisodeIndex + 1);
-}
+    // ==========================================
+    // 6. ANTI-REFRESH SYSTEM (CEK LOCALSTORAGE)
+    // ==========================================
+    window.onload = function() {
+      renderHome(); // TAMPILKAN KATALOG ANIME
 
-// ==========================================
-// 6. ANTI-REFRESH SYSTEM (CEK LOCALSTORAGE)
-// ==========================================
-window.onload = function() {
-  const savedView = localStorage.getItem('currentView');
-  const savedAnimeId = localStorage.getItem('currentAnimeId');
-  const savedEpisodeIndex = localStorage.getItem('lastViewedEpisode');
+      const savedView = localStorage.getItem('currentView');
+      const savedAnimeId = localStorage.getItem('currentAnimeId');
+      const savedEpisodeIndex = localStorage.getItem('lastViewedEpisode');
 
-  if (savedView === 'view-streaming' && savedAnimeId && savedEpisodeIndex !== null) {
-    // 1. Jika posisi terakhir sedang streaming -> Buka player streamingnya lagi
-    currentAnimeId = savedAnimeId;
-    openDetail(savedAnimeId);
-    startStreaming(parseInt(savedEpisodeIndex, 10));
-  } else if (savedView === 'view-detail' && savedAnimeId) {
-    // 2. Jika posisi terakhir di Detail Anime -> Tetap di Detail Anime
-    currentAnimeId = savedAnimeId;
-    openDetail(savedAnimeId);
-  } else {
-    // 3. Jika posisi di Home atau baru pertama kali buka -> Tampilkan Home
-    showView('view-home');
-  }
-};
+      if (savedView === 'view-streaming' && savedAnimeId && savedEpisodeIndex !== null) {
+        currentAnimeId = savedAnimeId;
+        renderDetail(savedAnimeId);
+        startStreaming(parseInt(savedEpisodeIndex, 10));
+      } else if (savedView === 'view-detail' && savedAnimeId) {
+        currentAnimeId = savedAnimeId;
+        showView('view-detail');
+        renderDetail(savedAnimeId);
+      } else {
+        showView('view-home');
+      }
+    };
   </script>
 </body>
 </html>
