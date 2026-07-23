@@ -241,10 +241,7 @@
       </div>
 
       <div class="video-wrapper">
-        <video id="main-player" controls preload="metadata">
-          <source id="video-source" src="" type="video/mp4">
-          Browser Anda tidak mendukung pemutar video ini.
-        </video>
+        <video id="main-player" controls playsinline preload="metadata"></video>
       </div>
 
       <div class="player-controls-bottom">
@@ -457,29 +454,32 @@
 
       document.getElementById('streaming-title').innerText = `${anime.title} - ${ep.title}`;
       
-      const videoElement = document.getElementById('main-player');
-      const videoSource = document.getElementById('video-source');
+      const streamUrl = `/api/stream?fileId=${ep.fileId}`;
       
-      if (videoElement && videoSource) {
-        if (!player) {
-          player = new Plyr('#main-player', {
-            controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'captions', 'settings', 'pip', 'fullscreen'],
-            seekTime: 10
-          });
-        }
-
-        player.source = {
-          type: 'video',
-          sources: [
-            {
-              src: `/api/stream?fileId=${ep.fileId}`,
-              type: 'video/mp4',
-            },
-          ],
-        };
-        
-        player.play();
+      // 1. Inisialisasi Plyr jika belum ada
+      if (!player) {
+        player = new Plyr('#main-player', {
+          controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'captions', 'settings', 'pip', 'fullscreen'],
+          seekTime: 10
+        });
       }
+
+      // 2. Tembak URL Stream ke Plyr secara resmi
+      player.source = {
+        type: 'video',
+        title: `${anime.title} - ${ep.title}`,
+        sources: [
+          {
+            src: streamUrl,
+            type: 'video/mp4',
+          },
+        ],
+      };
+
+      // 3. Putar video
+      player.play().catch(err => {
+        console.log("Autoplay dicegah browser, klik play manual:", err);
+      });
       
       document.getElementById('btn-prev').style.display = episodeIndex > 0 ? 'block' : 'none';
       document.getElementById('btn-next').style.display = episodeIndex < anime.episodes.length - 1 ? 'block' : 'none';
