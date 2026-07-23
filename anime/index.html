@@ -491,6 +491,26 @@ video {
           clickToPlay: true
         });
 
+        // FITUR DOUBLE TAP / CLICK TO SKIP 5 DETIK
+        const playerElement = document.querySelector('.plyr');
+        if (playerElement) {
+          playerElement.addEventListener('dblclick', (e) => {
+            // Hentikan fungsi fullscreen bawaan Plyr
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Cek sisi layar yang diklik
+            const rect = playerElement.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+
+            if (clickX < rect.width / 2) {
+              player.rewind(5); // Sisi KIRI: Mundur 5 detik
+            } else {
+              player.forward(5); // Sisi KANAN: Maju 5 detik
+            }
+          }, true);
+        }
+
         // 1. MATIKAN DOUBLE CLICK FULLSCREEN DI HP & LAPTOP
         const container = document.querySelector('.plyr');
         if (container) {
