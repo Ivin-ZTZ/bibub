@@ -456,15 +456,39 @@
       
       const streamUrl = `/api/stream?fileId=${ep.fileId}`;
       
-      // 1. Inisialisasi Plyr jika belum ada
+      // 1. Inisialisasi Plyr dengan event rotasi otomatis
       if (!player) {
         player = new Plyr('#main-player', {
-          controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'captions', 'settings', 'pip', 'fullscreen'],
+          controls: [
+            'play-large', 
+            'play', 
+            'progress', 
+            'current-time', 
+            'duration', 
+            'settings', 
+            'pip', 
+            'fullscreen'
+          ],
           seekTime: 10
+        });
+
+        // 2. PAKSA KELUAR/MASUK MODE LANDSCAPE SAAT FULLSCREEN
+        player.on('enterfullscreen', () => {
+          if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(err => {
+              console.log("Rotasi otomatis diblokir sistem HP:", err);
+            });
+          }
+        });
+
+        player.on('exitfullscreen', () => {
+          if (screen.orientation && screen.orientation.unlock) {
+            screen.orientation.unlock();
+          }
         });
       }
 
-      // 2. Tembak URL Stream ke Plyr secara resmi
+      // 3. Tembak URL Stream ke Plyr secara resmi
       player.source = {
         type: 'video',
         title: `${anime.title} - ${ep.title}`,
@@ -476,7 +500,7 @@
         ],
       };
 
-      // 3. Putar video
+      // 4. Putar video
       player.play().catch(err => {
         console.log("Autoplay dicegah browser, klik play manual:", err);
       });
