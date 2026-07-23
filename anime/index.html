@@ -201,11 +201,19 @@
   background-color: #000;
 }
 
-/* Memastikan Plyr mengisi penuh area wrapper secara responsif */
-.plyr {
-  border-radius: 12px;
-  width: 100% !important;
+/* Hilangkan highlight warna biru saat video diklik/diketuk di HP */
+.plyr, 
+.plyr__video-wrapper, 
+video {
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
 }
+
+  /* Memastikan Plyr mengisi penuh area wrapper secara responsif */
+  .plyr {
+    border-radius: 12px;
+    width: 100% !important;
+  }
 
     .player-controls-bottom {
       display: flex;
@@ -479,12 +487,20 @@
             'pip', 
             'fullscreen'
           ],
-          seekTime: 5, // Diubah menjadi 5 detik
-          clickToPlay: true,
-          toggleInvert: false
+          seekTime: 5,
+          clickToPlay: true
         });
 
-        // Paksa rotasi landscape saat enter fullscreen
+        // 1. MATIKAN DOUBLE CLICK FULLSCREEN DI HP & LAPTOP
+        const container = document.querySelector('.plyr');
+        if (container) {
+          container.addEventListener('dblclick', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }, true);
+        }
+
+        // 2. Kunci rotasi landscape saat enter fullscreen
         player.on('enterfullscreen', () => {
           if (screen.orientation && screen.orientation.lock) {
             screen.orientation.lock('landscape').catch(err => {
