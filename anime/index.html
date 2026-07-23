@@ -209,6 +209,9 @@
       margin-top: 15px;
     }
   </style>
+  <!-- Library Plyr Player (CSS & JS) -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 </head>
 <body>
 
@@ -264,6 +267,7 @@
     // ==========================================
     let currentAnimeIndex = null;
     let currentEpisodeIndex = null;
+    let player; // Variabel untuk menyimpan instance Plyr
 
     // ==========================================
     // DATA ANIME & TEMPLATE EPISODE
@@ -451,31 +455,49 @@ function selectAnime(animeId) {
 function startStreaming(episodeIndex) {
   currentEpisodeIndex = episodeIndex;
   localStorage.setItem('lastViewedEpisode', episodeIndex);
+  localStorage.setItem('currentView', 'view-streaming');
   
   showView('view-streaming');
   
   const anime = ANIME_CATALOG.find(a => a.id === currentAnimeId);
   const ep = anime.episodes[episodeIndex];
-
+  
+  // Catat riwayat tontonan (agar warna tombol berubah)
   if (ep.fileId) {
-    // Kita gunakan fileId sebagai penanda unik untuk episode tersebut
     localStorage.setItem(`watched_${ep.fileId}`, 'true');
   }
-  
-  // Set judul streaming gabungan
+
   document.getElementById('streaming-title').innerText = `${anime.title} - ${ep.title}`;
   
-  // Tembak source video ke jembatan API edge Vercel
-  const player = document.getElementById('main-player');
+  const videoElement = document.getElementById('main-player');
   const videoSource = document.getElementById('video-source');
   
-  if (player && videoSource) {
+  if (videoElement && videoSource) {
+    // 1. Tembak source stream video
     videoSource.src = `/api/stream?fileId=${ep.fileId}`;
-    player.load(); // Wajib agar browser memuat ulang source baru
-    player.play().catch(e => console.log("Autoplay dicegah browser, perlu interaksi user."));
+    
+    // 2. Aktifkan / Re-inisialisasi Plyr Player Polosan
+    if (!player) {
+      player = new Plyr('#main-player', {
+        controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'captions', 'settings', 'pip', 'fullscreen'],
+        seekTime: 10
+      });
+    }
+
+    // Load video baru ke dalam Plyr
+    player.source = {
+      type: 'video',
+      sources: [
+        {
+          src: `/api/stream?fileId=${ep.fileId}`,
+          type: 'video/mp4',
+        },
+      ],
+    };
+    
+    player.play();
   }
   
-  // Update visibilitas tombol prev/next
   document.getElementById('btn-prev').style.display = episodeIndex > 0 ? 'block' : 'none';
   document.getElementById('btn-next').style.display = episodeIndex < anime.episodes.length - 1 ? 'block' : 'none';
 }
@@ -485,25 +507,33 @@ function showView(viewId) {
   document.getElementById('view-home').style.display = viewId === 'view-home' ? 'block' : 'none';
   document.getElementById('view-detail').style.display = viewId === 'view-detail' ? 'block' : 'none';
   document.getElementById('view-streaming').style.display = viewId === 'view-streaming' ? 'block' : 'none';
+  
+  // SIMPAN TAMPILAN AKTIF KE MEMORI (Agar anti-refresh tetap tau posisi halaman)
+  localStorage.setItem('currentView', viewId);
 }
 
 // ==========================================
 // 3. FUNGSI TOMBOL KEMBALI
 // ==========================================
 function navigateToHome() {
-  localStorage.clear(); // Bersihkan semua memori refresh saat kembali ke home
+  // JANGAN PAKAI localStorage.clear() agar data "watched_" tidak terhapus!
+  localStorage.removeItem('currentAnimeId');
+  localStorage.removeItem('lastViewedEpisode');
+  
   currentAnimeId = null;
   currentEpisodeIndex = null;
   showView('view-home');
 }
 
 function navigateToDetail() {
-  localStorage.removeItem('lastViewedEpisode'); // Hapus status sedang streaming
+  localStorage.removeItem('lastViewedEpisode'); // Hapus status episode aktif saja
   const player = document.getElementById('main-player');
-  if (player) player.pause(); // Hentikan video agar tidak bersuara di latar belakang
+  if (player) player.pause(); // Hentikan video
   
   showView('view-detail');
-  renderDetail(currentAnimeId);
+  if (currentAnimeId) {
+    renderDetail(currentAnimeId);
+  }
 }
 
 // ==========================================
@@ -574,24 +604,21 @@ function playNextEpisode() {
 // 6. ANTI-REFRESH SYSTEM (CEK LOCALSTORAGE)
 // ==========================================
 window.onload = function() {
-  renderHome(); // Tampilkan home dulu sebagai dasar
-  
-  const savedAnimeId = localStorage.getItem('lastViewedAnime');
+  const savedView = localStorage.getItem('currentView');
+  const savedAnimeId = localStorage.getItem('currentAnimeId');
   const savedEpisodeIndex = localStorage.getItem('lastViewedEpisode');
 
-  if (savedAnimeId) {
+  if (savedView === 'view-streaming' && savedAnimeId && savedEpisodeIndex !== null) {
+    // 1. Jika posisi terakhir sedang streaming -> Buka player streamingnya lagi
     currentAnimeId = savedAnimeId;
-    if (savedEpisodeIndex !== null) {
-      // Jika sebelum refresh sedang streaming, langsung lempar kembali ke player streaming
-      showView('view-streaming');
-      startStreaming(parseInt(savedEpisodeIndex));
-    } else {
-      // Jika sebelum refresh sedang melihat list episode, kembalikan ke halaman detail
-      showView('view-detail');
-      renderDetail(savedAnimeId);
-    }
+    openDetail(savedAnimeId);
+    startStreaming(parseInt(savedEpisodeIndex, 10));
+  } else if (savedView === 'view-detail' && savedAnimeId) {
+    // 2. Jika posisi terakhir di Detail Anime -> Tetap di Detail Anime
+    currentAnimeId = savedAnimeId;
+    openDetail(savedAnimeId);
   } else {
-    // Kondisi bersih, masuk menu utama
+    // 3. Jika posisi di Home atau baru pertama kali buka -> Tampilkan Home
     showView('view-home');
   }
 };
