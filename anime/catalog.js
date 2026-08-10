@@ -160,7 +160,7 @@ const ANIME_CATALOG = [
     meta: "Sci-Fi, Mecha, Action • 2025 • 12 Episode",
     cover: "https://cdn.myanimelist.net/images/anime/1052/148743.jpg",
     episodes: [
-      { title: "Episode 01 - The Red Gundam", fileId: "1wHgFm1LwDxHpOw3QQc7cLmoFqASXax94" },
+      { title: "Episode 01 - The Red Gundam", fileId: "1n8U-5RriXp-58KN3gSFMTJLGaAcqCWnw" },
       { title: "Episode 02 - The White Gundam", fileId: "1CVNCzbOLllBfewcqZdD58-IxASEGUmEH" },
       { title: "Episode 03 - Machu in Clan Battle", fileId: "1O4qjs8emqAj8SYAcpGfYhOkIpCMmXSwL" },
       { title: "Episode 04 - The Witch's War", fileId: "1RW7yBj0HJe3FpJNdlfvW7F9YaN0MO16Q" },
