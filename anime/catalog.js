@@ -158,7 +158,7 @@ const ANIME_CATALOG = [
     id: "gundam-hathaway-sorcery-of-nymph-circe",
     title: "Mobile Suit Gundam Hathaway: The Sorcery of Nymph Circe",
     meta: "Sci-Fi, Mecha, Movie • 2026 • Sunrise",
-    cover: "https://www.imdb.com/title/tt32915652/mediaviewer/rm16297474/?ref_=tt_ov_i", 
+    cover: "https://cdn.myanimelist.net/images/anime/1983/154129.jpg", 
     episodes: [
       { 
         title: "Play Movie (BD 720P/1080P)", fileId: "11JKGY4Uz_5BOZNlQzTEb7OFex0Z9E8BS" }
