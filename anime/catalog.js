@@ -154,24 +154,14 @@ const ANIME_CATALOG = [
           { title: "Play Movie (BD 720P/1080P)", fileId: "1wuPv3g1YW3uYIGk5f5UBhiluFHIYg2Ci" }
         ]
       },
-      {
-    id: "gundam-gquax",
-    title: "Mobile Suit Gundam GQuuuuuuX",
-    meta: "Sci-Fi, Mecha, Action • 2025 • 12 Episode",
-    cover: "https://cdn.myanimelist.net/images/anime/1052/148743.jpg",
+ {
+    id: "gundam-hathaway-sorcery-of-nymph-circe",
+    title: "Mobile Suit Gundam Hathaway: The Sorcery of Nymph Circe",
+    meta: "Sci-Fi, Mecha, Movie • 2026 • Sunrise",
+    cover: "https://www.imdb.com/title/tt32915652/mediaviewer/rm16297474/?ref_=tt_ov_i", 
     episodes: [
-      { title: "Episode 01 - The Red Gundam", fileId: "1n8U-5RriXp-58KN3gSFMTJLGaAcqCWnw" },
-      { title: "Episode 02 - The White Gundam", fileId: "1CVNCzbOLllBfewcqZdD58-IxASEGUmEH" },
-      { title: "Episode 03 - Machu in Clan Battle", fileId: "1O4qjs8emqAj8SYAcpGfYhOkIpCMmXSwL" },
-      { title: "Episode 04 - The Witch's War", fileId: "1RW7yBj0HJe3FpJNdlfvW7F9YaN0MO16Q" },
-      { title: "Episode 05 - Nyaan Doesn't Know About Kira-Kira", fileId: "1tvfs6_KFrj5LghHN2dz2SBeuaIYYCjg7" },
-      { title: "Episode 06 - The Plot to Assassinate Kycilia", fileId: "10GdByCbWMqM24BGhyulvNAyMtVf0otQj" },
-      { title: "Episode 07 - MACHU's Rebellion", fileId: "19a1C3PUCXBJTr6tCYzMPzTw_XaN-NoSX" },
-      { title: "Episode 08 - Falling to the MOON", fileId: "1OeiBGz_-wgRsVSnYBBfh5GcwJscBeskk" },
-      { title: "Episode 09 - Rose of Sharon", fileId: "1YvmRQKiZvx1x44JMvrGNoP_XwNiRJYS4" },
-      { title: "Episode 10 - Yomagn'tho Blockade", fileId: "1vlnC0gQogx1t28olass8ALAaAuYm0RKq" },
-      { title: "Episode 11 - The Alpha Killers", fileId: "1UqjKILrBPBO-xI2iFC7CKdEpThYHdgkM" },
-      { title: "Episode 12 - That's Why I...", fileId: "1bYwX2MZkcOUy0Cphz94knhU76PM5Ne8F" }
+      { 
+        title: "Play Movie (BD 720P/1080P)", fileId: "11JKGY4Uz_5BOZNlQzTEb7OFex0Z9E8BS" }
     ]
   },
     ];
