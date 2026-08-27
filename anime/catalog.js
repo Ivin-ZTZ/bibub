@@ -164,17 +164,160 @@ const ANIME_CATALOG = [
         title: "Play Movie (BD 720P/1080P)", fileId: "11JKGY4Uz_5BOZNlQzTEb7OFex0Z9E8BS" }
     ]
   },
-      {
+    {
     id: "gundam-wing",
     title: "Mobile Suit Gundam Wing",
     meta: "Sci-Fi, Mecha, Action • 1995 • Sunrise",
-    cover: "https://m.media-amazon.com/images/M/MV5BMDk4N2UzZDMtNGEwZC00MTgzLTg5NTQtODU4Yzg0ZjYzNzk2XkEyXkFqcGc@._V1_.jpg", // Anda bisa mengganti URL cover ini dengan poster pilihan Anda
+    cover: "https://m.media-amazon.com/images/M/MV5BMDk4N2UzZDMtNGEwZC00MTgzLTg5NTQtODU4Yzg0ZjYzNzk2XkEyXkFqcGc@._V1_.jpg",
     episodes: [
       {
         title: "Episode 01 - Shooting Star She Saw",
         sources: [
-          { name: "Server 1 (GDrive 480p)", fileId: "1-C1bphpV_lQs4M46K5ZK7P4pW7Ms6tlo" },
-          { name: "Server 2 (Archive 480p)", url: "https://archive.org/download/kusonime-mobile-suit-gundam-wing-bd-ep-01/Kusonime_Mobile_Suit_Gundam_Wing_BD_Ep01.mp4" }
+          { name: "Server 1 (GDrive 480p)", fileId: "1-C1bphpV_lQs4M46K5ZK7P4pW7Ms6tlo" }
+        ]
+      },
+      {
+        title: "Episode 02 - The Shadow of Gundam",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1U7RuVz2fpHyTNm3_WCIXAZvr_lVtxTHZ" }
+        ]
+      },
+      {
+        title: "Episode 03 - Five Gundams Confirmed",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1wePKwJK4uq0c-bK5L13uk7ssHxQY8UiC" }
+        ]
+      },
+      {
+        title: "Episode 04 - The Victoria Nightmare",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "18LJglfyHqMHmakg7e4UPh24J3QnL71Gb" }
+        ]
+      },
+      {
+        title: "Episode 05 - Relena's Secret",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1zPghjUkeg85wR8AmOBYc1p9VecMrdHYJ" }
+        ]
+      },
+      {
+        title: "Episode 06 - Party Night",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "14uCzwRzugvfg4iXf3ldeVCCVRr5LyoGv" }
+        ]
+      },
+      {
+        title: "Episode 07 - Scenario for Bloodshed",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1F-w4zSeyV10P2gNDyOuZy1DJmEPGOwnm" }
+        ]
+      },
+      {
+        title: "Episode 08 - The Treize Assassination",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1voHY0qj_pRnwE4j-9ggRgvYNZ3hcnjg7" }
+        ]
+      },
+      {
+        title: "Episode 09 - Portrait of a Ruined Country",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1lg7rmdFIdw469jjBgvutTYkDw9nyBGa0" }
+        ]
+      },
+      {
+        title: "Episode 10 - Heero, Distracted by Defeat",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1zH-1B6k_55XWMrAZuY4mGCG5D1pugDzr" }
+        ]
+      },
+      {
+        title: "Episode 11 - The Whereabouts of Happiness",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1n3JLARDVn9iRkzM6tXYr8Q9EcNSc6GY8" }
+        ]
+      },
+      {
+        title: "Episode 12 - Bewildered Warriors",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1QIOXkXD3TKUFiyH4p0ZEsHknPErqkOc6" }
+        ]
+      },
+      {
+        title: "Episode 13 - Catherine's Tears",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1qViuUk5L54FGLKK7qhbXQVrOF40iZ1Ee" }
+        ]
+      },
+      {
+        title: "Episode 14 - The Order to Destroy 01",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1ajHsvttYTW32rm7jMYOdWmzg8UlGGcAC" }
+        ]
+      },
+      {
+        title: "Episode 15 - To the Battlefields of Outer Space",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "15o6oGLgteDEtqVsNkLPl2m_idEkvq7bp" }
+        ]
+      },
+      {
+        title: "Episode 16 - Sorrowful Battle",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "13VUEqbTy5J4hVFHPRSPkpkRWeRaCT6D-" }
+        ]
+      },
+      {
+        title: "Episode 17 - Betrayed Home Country",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1HjCZy3ymhR-bAFoA1H0nY-DGCljSg4KP" }
+        ]
+      },
+      {
+        title: "Episode 18 - Tallgeese Destroyed",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1_BeRMEArCEM8PUPBB_IU-XnksFiAW9Kh" }
+        ]
+      },
+      {
+        title: "Episode 19 - Assault on Barguar",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1S_L0gWnuB6BSXxaGTSEs5yrS7CjxbwNE" }
+        ]
+      },
+      {
+        title: "Episode 20 - The Lunar Base Infiltration",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1ZVruJkyxn4v_Fr0qaA7DMocWbEKnK5Ng" }
+        ]
+      },
+      {
+        title: "Episode 21 - Grief-Stricken Quatre",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1xBfn_aLuAABhHBizyjTIbQi0YAVu2INK" }
+        ]
+      },
+      {
+        title: "Episode 22 - The Independent King",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1HSlhWkclaziWI2fcMrlZjJwTOeZbNJ9c" }
+        ]
+      },
+      {
+        title: "Episode 23 - Duo, the God of Death Again",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "17tFztI9kd7X5pMwcbDOtZsFgLGUdIdVn" }
+        ]
+      },
+      {
+        title: "Episode 24 - The Gundam Called Zero",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1j-6wAEztmjmFSqhZwG7kgWr7wkX0FatI" }
+        ]
+      },
+      {
+        title: "Episode 25 - Quatere vs. Heero",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "142XpR0prAB0AXOGkwEIoyaPQX323hfeQ" }
         ]
       }
     ]
