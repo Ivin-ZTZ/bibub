@@ -266,6 +266,12 @@ video {
         <button id="btn-prev" class="btn-action" onclick="playPrevEpisode()">⏮ Episode Sebelumnya</button>
         <button id="btn-next" class="btn-action" onclick="playNextEpisode()">Episode Selanjutnya ⏭</button>
       </div>
+      <!-- Container Tombol Pilihan Server -->
+<div id="server-options" class="server-container" style="display: none; margin-top: 15px;">
+  <span style="font-weight: bold; margin-right: 10px;">Pilih Server / Kualitas:</span>
+  <div id="server-buttons" style="display: inline-flex; gap: 8px;"></div>
+</div>
+      
     </div>
 
   </div>
@@ -528,6 +534,72 @@ video {
       } else {
         showView('view-home');
       }
+
+      // Fungsi untuk memuat video berdasarkan objek source yang dipilih
+function playSource(source) {
+  let streamUrl = "";
+
+  // Jika berupa Google Drive fileId, kirim ke API proxy Vercel Anda
+  if (source.fileId) {
+    streamUrl = `/api/stream?fileId=${source.fileId}`;
+  } 
+  // Jika berupa URL langsung (seperti Archive.org / Direct MP4)
+  else if (source.url) {
+    streamUrl = source.url;
+  }
+
+  // Update pemutar Plyr / HTML5 video
+  const videoElement = document.querySelector('video');
+  videoElement.src = streamUrl;
+  
+  if (player) {
+    player.source = {
+      type: 'video',
+      sources: [{ src: streamUrl, type: 'video/mp4' }]
+    };
+    player.play();
+  }
+}
+
+// Fungsi saat episode diklik
+function selectEpisode(animeId, episodeIndex) {
+  const anime = ANIME_CATALOG.find(a => a.id === animeId);
+  const episode = anime.episodes[episodeIndex];
+
+  const serverContainer = document.getElementById('server-options');
+  const serverButtonsDiv = document.getElementById('server-buttons');
+  
+  serverButtonsDiv.innerHTML = ''; // Bersihkan tombol lama
+
+  // Jika episode memiliki opsi multiple sources
+  if (episode.sources && episode.sources.length > 0) {
+    serverContainer.style.display = 'block';
+
+    episode.sources.forEach((src, idx) => {
+      const btn = document.createElement('button');
+      btn.innerText = src.name;
+      btn.className = 'server-btn';
+      btn.onclick = () => {
+        // Highlight tombol yang aktif
+        document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        playSource(src);
+      };
+
+      // Set server pertama sebagai default
+      if (idx === 0) btn.classList.add('active');
+      serverButtonsDiv.appendChild(btn);
+    });
+
+    // Putar sumber pertama secara otomatis
+    playSource(episode.sources[0]);
+  } else {
+    // Fallback jika masih memakai format lama (hanya fileId tunggal)
+    serverContainer.style.display = 'none';
+    playSource({ fileId: episode.fileId });
+  }
+}
     };
   </script>
 </body>
