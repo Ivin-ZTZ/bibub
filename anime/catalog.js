@@ -161,7 +161,12 @@ const ANIME_CATALOG = [
     cover: "https://cdn.myanimelist.net/images/anime/1983/154129.jpg", 
     episodes: [
       { 
-        title: "Play Movie (BD 720P/1080P)", fileId: "11JKGY4Uz_5BOZNlQzTEb7OFex0Z9E8BS" }
+        title: "Play Movie (BD 720P)",
+        sources: [
+            { name: "Server 1 (GDrive 720P)", fileId: "11JKGY4Uz_5BOZNlQzTEb7OFex0Z9E8BS" }
+            { name: "Server 2 (Archive 720P)", url: "vxl.Mobile.Suit.Gundam.Hathaway.The.Sorcery.Of.Nymph.Circe.720p.mp4" }
+              }
+          ]
     ]
   },
     {
