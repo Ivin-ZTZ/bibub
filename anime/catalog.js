@@ -173,8 +173,8 @@ const ANIME_CATALOG = [
       {
         title: "Episode 01 - Shooting Star She Saw",
         sources: [
-          { name: "Server 1 (GDrive 720p)", fileId: "1-C1bphpV_lQs4M46K5ZK7P4pW7Ms6tlo" },
-          { name: "Server 2 (Archive 720p)", url: "https://archive.org/download/kusonime-mobile-suit-gundam-wing-bd-ep-01/Kusonime_Mobile_Suit_Gundam_Wing_BD_Ep01.mp4" }
+          { name: "Server 1 (GDrive 480p)", fileId: "1-C1bphpV_lQs4M46K5ZK7P4pW7Ms6tlo" },
+          { name: "Server 2 (Archive 480p)", url: "https://archive.org/download/kusonime-mobile-suit-gundam-wing-bd-ep-01/Kusonime_Mobile_Suit_Gundam_Wing_BD_Ep01.mp4" }
         ]
       }
     ]
