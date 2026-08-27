@@ -164,4 +164,19 @@ const ANIME_CATALOG = [
         title: "Play Movie (BD 720P/1080P)", fileId: "11JKGY4Uz_5BOZNlQzTEb7OFex0Z9E8BS" }
     ]
   },
+      {
+    id: "gundam-wing",
+    title: "Mobile Suit Gundam Wing",
+    meta: "Sci-Fi, Mecha, Action • 1995 • Sunrise",
+    cover: "https://m.media-amazon.com/images/M/MV5BMjA4ZGYzMDMtN2ViNC00M2I4LTkyYjUtY2I3Y2E3OGExZjA2XkEyXkFqcGc@._V1_.jpg", // Anda bisa mengganti URL cover ini dengan poster pilihan Anda
+    episodes: [
+      {
+        title: "Episode 01 - Shooting Star She Saw",
+        sources: [
+          { name: "Server 1 (GDrive 720p)", fileId: "1-C1bphpV_lQs4M46K5ZK7P4pW7Ms6tlo" },
+          { name: "Server 2 (Archive 720p)", url: "https://archive.org/download/kusonime-mobile-suit-gundam-wing-bd-ep-01/Kusonime_Mobile_Suit_Gundam_Wing_BD_Ep01.mp4" }
+        ]
+      }
+    ]
+  },
     ];
