@@ -178,8 +178,8 @@ const ANIME_CATALOG = [
       {
         title: "Episode 01 - Shooting Star She Saw",
         sources: [
-          { name: "Server 1 (GDrive 480p)", fileId: "1-C1bphpV_lQs4M46K5ZK7P4pW7Ms6tlo" }
-            { name: "Server 2 (Catbox 480p)", url: "https://files.catbox.moe/dd8e1o.mp4" }
+          { name: "Server 1 (GDrive 480p)", fileId: "1-C1bphpV_lQs4M46K5ZK7P4pW7Ms6tlo" },
+          { name: "Server 2 (Catbox 480p)", url: "https://files.catbox.moe/dd8e1o.mp4" }
         ]
       },
       {
