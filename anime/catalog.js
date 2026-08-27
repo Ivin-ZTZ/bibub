@@ -168,7 +168,7 @@ const ANIME_CATALOG = [
     id: "gundam-wing",
     title: "Mobile Suit Gundam Wing",
     meta: "Sci-Fi, Mecha, Action • 1995 • Sunrise",
-    cover: "https://m.media-amazon.com/images/M/MV5BMjA4ZGYzMDMtN2ViNC00M2I4LTkyYjUtY2I3Y2E3OGExZjA2XkEyXkFqcGc@._V1_.jpg", // Anda bisa mengganti URL cover ini dengan poster pilihan Anda
+    cover: "https://m.media-amazon.com/images/M/MV5BMDk4N2UzZDMtNGEwZC00MTgzLTg5NTQtODU4Yzg0ZjYzNzk2XkEyXkFqcGc@._V1_.jpg", // Anda bisa mengganti URL cover ini dengan poster pilihan Anda
     episodes: [
       {
         title: "Episode 01 - Shooting Star She Saw",
