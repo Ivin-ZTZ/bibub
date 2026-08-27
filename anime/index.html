@@ -334,33 +334,34 @@
       player = new Plyr('#main-player', {
         controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'settings', 'pip', 'fullscreen'],
         seekTime: 5,
-        clickToPlay: true
+        clickToPlay: true,
+        // Matikan pemicu fullscreen otomatis dari double click bawaan Plyr
+        doubleClickDelay: 0
       });
 
-      // 1. BLOKIR DOUBLE TAP NATIVE & CEK DOUBLE CLICK UNTUK SKIP 5 DETIK
-      const videoContainer = document.querySelector('.video-wrapper');
-      
-      if (videoContainer) {
-        // Cegah gesture double tap bawaan browser HP agar tidak fullscreen
-        videoContainer.addEventListener('dblclick', (e) => {
+      // ==========================================
+      // FITUR DOUBLE TAP TO SKIP 5 DETIK (ANTI FULLSCREEN)
+      // ==========================================
+      const videoWrapper = document.querySelector('.video-wrapper');
+      if (videoWrapper) {
+        videoWrapper.addEventListener('dblclick', (e) => {
+          // Hentikan fungsi fullscreen bawaan browser / Plyr
           e.preventDefault();
           e.stopPropagation();
 
-          // Hitung posisi ketukan (Kiri = Mundur 5s, Kanan = Maju 5s)
-          const rect = videoContainer.getBoundingClientRect();
+          // Cek posisi klik/tap (Sisi Kiri = Mundur 5 detik, Sisi Kanan = Maju 5 detik)
+          const rect = videoWrapper.getBoundingClientRect();
           const clickX = e.clientX - rect.left;
 
-          if (player) {
-            if (clickX < rect.width / 2) {
-              player.rewind(5); // Sisi KIRI: Mundur 5 detik
-            } else {
-              player.forward(5); // Sisi KANAN: Maju 5 detik
-            }
+          if (clickX < rect.width / 2) {
+            player.rewind(5); // Sisi KIRI
+          } else {
+            player.forward(5); // Sisi KANAN
           }
         }, true);
       }
 
-      // 2. KUNCI ROTASI LANDSCAPE SAAT ENTER FULLSCREEN (TETAP AKTIF)
+      // Kunci rotasi landscape saat enter fullscreen di HP
       player.on('enterfullscreen', () => {
         if (screen.orientation && screen.orientation.lock) {
           screen.orientation.lock('landscape').catch(() => {});
