@@ -337,7 +337,30 @@
         clickToPlay: true
       });
 
-      // Rotasi otomatis saat fullscreen
+      // 1. BLOKIR DOUBLE TAP NATIVE & CEK DOUBLE CLICK UNTUK SKIP 5 DETIK
+      const videoContainer = document.querySelector('.video-wrapper');
+      
+      if (videoContainer) {
+        // Cegah gesture double tap bawaan browser HP agar tidak fullscreen
+        videoContainer.addEventListener('dblclick', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Hitung posisi ketukan (Kiri = Mundur 5s, Kanan = Maju 5s)
+          const rect = videoContainer.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+
+          if (player) {
+            if (clickX < rect.width / 2) {
+              player.rewind(5); // Sisi KIRI: Mundur 5 detik
+            } else {
+              player.forward(5); // Sisi KANAN: Maju 5 detik
+            }
+          }
+        }, true);
+      }
+
+      // 2. KUNCI ROTASI LANDSCAPE SAAT ENTER FULLSCREEN (TETAP AKTIF)
       player.on('enterfullscreen', () => {
         if (screen.orientation && screen.orientation.lock) {
           screen.orientation.lock('landscape').catch(() => {});
