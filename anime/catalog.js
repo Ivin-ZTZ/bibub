@@ -163,10 +163,10 @@ const ANIME_CATALOG = [
       { 
         title: "Play Movie (BD 720P)",
         sources: [
-            { name: "Server 1 (GDrive 720P)", fileId: "11JKGY4Uz_5BOZNlQzTEb7OFex0Z9E8BS" }
-            { name: "Server 2 (Archive 720P)", url: "vxl.Mobile.Suit.Gundam.Hathaway.The.Sorcery.Of.Nymph.Circe.720p.mp4" }
-              }
-          ]
+          { name: "Server 1 (GDrive 720P)", fileId: "11JKGY4Uz_5BOZNlQzTEb7OFex0Z9E8BS" },
+          { name: "Server 2 (Archive 720P)", url: "https://archive.org/download/vxl.Mobile.Suit.Gundam.Hathaway.The.Sorcery.Of.Nymph.Circe.720p/vxl.Mobile.Suit.Gundam.Hathaway.The.Sorcery.Of.Nymph.Circe.720p.mp4" }
+        ]
+      }
     ]
   },
     {
