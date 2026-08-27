@@ -325,6 +325,150 @@ const ANIME_CATALOG = [
         sources: [
           { name: "Server 1 (GDrive 480p)", fileId: "142XpR0prAB0AXOGkwEIoyaPQX323hfeQ" }
         ]
+      },
+       {
+        title: "Episode 26 - The Eternal Star That Lights the Way",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/o6t9lt.mp4" }
+        ]
+      },
+      {
+        title: "Episode 27 - Sound of the Locus of Victory and Defeat",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/7v7w5s.mp4" }
+        ]
+      },
+      {
+        title: "Episode 28 - Passing Destinies",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/ckbt3o.mp4" }
+        ]
+      },
+      {
+        title: "Episode 29 - The Target That Was One's Own Sight",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/ibscwg.mp4" }
+        ]
+      },
+      {
+        title: "Episode 30 - The Outer Space Where Grief Lies",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/sncumw.mp4" }
+        ]
+      },
+      {
+        title: "Episode 31 - The Glass Kingdom",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/odeohu.mp4" }
+        ]
+      },
+      {
+        title: "Episode 32 - The God of Death vs. Gundam Zero",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/jbwfe6.mp4" }
+        ]
+      },
+      {
+        title: "Episode 33 - The Lonely Battle",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/dayw62.mp4" }
+        ]
+      },
+      {
+        title: "Episode 34 - And Its Name Is Epyon",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/6f84nv.mp4" }
+        ]
+      },
+      {
+        title: "Episode 35 - Wufei Rises Again",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/fuxioj.mp4" }
+        ]
+      },
+      {
+        title: "Episode 36 - Sanc Kingdom's Collapse",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/vdv1mx.mp4" }
+        ]
+      },
+      {
+        title: "Episode 37 - Zero vs. Epyon",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/jfnp8v.mp4" }
+        ]
+      },
+      {
+        title: "Episode 38 - Queen Relena Is Born",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/yngntr.mp4" }
+        ]
+      },
+      {
+        title: "Episode 39 - Trowa's Return to the Battlefield",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/fd7xoy.mp4" }
+        ]
+      },
+      {
+        title: "Episode 40 - A A New Leader",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/cv10i4.mp4" }
+        ]
+      },
+      {
+        title: "Episode 41 - Crossfire at Barguar",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/tw19bk.mp4" }
+        ]
+      },
+      {
+        title: "Episode 42 - Battleship Peacemillion",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/987ppa.mp4" }
+        ]
+      },
+      {
+        title: "Episode 43 - The Sound of Zero's Calling",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/vci61j.mp4" }
+        ]
+      },
+      {
+        title: "Episode 44 - The Eleven Gundams",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/66geqg.mp4" }
+        ]
+      },
+      {
+        title: "Episode 45 - Signs of a Clash",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/w0jjns.mp4" }
+        ]
+      },
+      {
+        title: "Episode 46 - White Fang's Decision",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/mct2gt.mp4" }
+        ]
+      },
+      {
+        title: "Episode 47 - Collision in Space",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/pr02jj.mp4" }
+        ]
+      },
+      {
+        title: "Episode 48 - Takeoff Into Confusion",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/urcqjc.mp4" }
+        ]
+      },
+      {
+        title: "Episode 49 - The Final Victor",
+        sources: [
+          { name: "Server 1 (Catbox 480p)", url: "https://files.catbox.moe/vwtcur.mp4" }
+        ]
       }
     ]
   },
