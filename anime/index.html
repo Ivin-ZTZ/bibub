@@ -210,6 +210,20 @@
       border-color: var(--accent);
       font-weight: bold;
     }
+
+    /* Mode Fullscreen Semu (Memenuhi Layar tanpa Notifikasi Sistem HP) */
+.plyr--fullscreen-fallback {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 999999 !important;
+  background: #000 !important;
+  border-radius: 0 !important;
+}
   </style>
 </head>
 <body>
@@ -374,6 +388,13 @@
         }
       });
     }
+
+      player = new Plyr('#main-player', {
+        controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'settings', 'pip', 'fullscreen'],
+        seekTime: 5,
+        clickToPlay: true,
+        fullscreen: { enabled: true, fallback: true, iosNative: true }
+    });
 
     function startStreaming(episodeIndex) {
       currentEpisodeIndex = episodeIndex;
