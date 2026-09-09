@@ -211,18 +211,27 @@
       font-weight: bold;
     }
 
-    /* Mode Fullscreen Semu (Memenuhi Layar tanpa Notifikasi Sistem HP) */
-.plyr--fullscreen-fallback {
+    /* Custom Fullscreen tanpa memicu Notifikasi HP */
+.video-wrapper.custom-fullscreen {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
   z-index: 999999 !important;
   background: #000 !important;
-  border-radius: 0 !important;
+}
+
+/* Jika HP dipegang Vertikal saat Fullscreen, Paksa Rotasi ke Landscape via CSS */
+@media screen and (orientation: portrait) {
+  .video-wrapper.custom-fullscreen {
+    width: 100vh !important;
+    height: 100vw !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+    transform-origin: center !important;
+  }
 }
   </style>
 </head>
@@ -349,52 +358,46 @@
         controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'settings', 'pip', 'fullscreen'],
         seekTime: 5,
         clickToPlay: true,
-        // Matikan pemicu fullscreen otomatis dari double click bawaan Plyr
-        doubleClickDelay: 0
+        doubleClickDelay: 0,
+        // MATIKAN Native Fullscreen API agar tidak memicu notifikasi bawaan HP
+        fullscreen: { enabled: true, fallback: true, iosNative: false }
       });
 
-      // ==========================================
-      // FITUR DOUBLE TAP TO SKIP 5 DETIK (ANTI FULLSCREEN)
-      // ==========================================
       const videoWrapper = document.querySelector('.video-wrapper');
-      if (videoWrapper) {
-        videoWrapper.addEventListener('dblclick', (e) => {
-          // Hentikan fungsi fullscreen bawaan browser / Plyr
-          e.preventDefault();
-          e.stopPropagation();
 
-          // Cek posisi klik/tap (Sisi Kiri = Mundur 5 detik, Sisi Kanan = Maju 5 detik)
-          const rect = videoWrapper.getBoundingClientRect();
-          const clickX = e.clientX - rect.left;
-
-          if (clickX < rect.width / 2) {
-            player.rewind(5); // Sisi KIRI
-          } else {
-            player.forward(5); // Sisi KANAN
-          }
-        }, true);
-      }
-
-      // Kunci rotasi landscape saat enter fullscreen di HP
+      // Intersepsi tombol Fullscreen Plyr
       player.on('enterfullscreen', () => {
+        videoWrapper.classList.add('custom-fullscreen');
+        // Mencoba kunci rotasi layar jika diizinkan browser
         if (screen.orientation && screen.orientation.lock) {
           screen.orientation.lock('landscape').catch(() => {});
         }
       });
 
       player.on('exitfullscreen', () => {
+        videoWrapper.classList.remove('custom-fullscreen');
         if (screen.orientation && screen.orientation.unlock) {
           screen.orientation.unlock();
         }
       });
-    }
 
-      player = new Plyr('#main-player', {
-        controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'settings', 'pip', 'fullscreen'],
-        seekTime: 5,
-        clickToPlay: true,
-        fullscreen: { enabled: true, fallback: true, iosNative: true }
-    });
+      // Event Double Tap Skip 5 Detik
+      if (videoWrapper) {
+        videoWrapper.addEventListener('dblclick', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const rect = videoWrapper.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+
+          if (clickX < rect.width / 2) {
+            player.rewind(5);
+          } else {
+            player.forward(5);
+          }
+        }, true);
+      }
+    }
 
     function startStreaming(episodeIndex) {
       currentEpisodeIndex = episodeIndex;
