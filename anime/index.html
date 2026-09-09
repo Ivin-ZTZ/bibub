@@ -16,20 +16,21 @@
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 
   <style>
-    /* ========== TEMA & VARIABEL ========== */
+    /* ========== TEMA & VARIABEL (MONOCHROME BLUE) ========== */
     :root {
-      --bg-color: #0a0a0f;
-      --bg-secondary: #12121a;
-      --surface-color: #1a1a2e;
-      --surface-hover: #252540;
-      --surface-light: #2a2a45;
-      --text-main: #eaeaf0;
-      --text-muted: #8888a0;
-      --accent: #f0c040;
-      --accent-dim: rgba(240, 192, 64, 0.15);
-      --accent-glow: rgba(240, 192, 64, 0.3);
-      --card-bg: #16162a;
-      --card-border: rgba(255,255,255,0.06);
+      --bg-color: #090b10;
+      --bg-secondary: #0e1117;
+      --surface-color: #151922;
+      --surface-hover: #1e2430;
+      --surface-light: #252d3a;
+      --text-main: #e0e4ec;
+      --text-muted: #6b7a90;
+      --accent: #5b8def;
+      --accent-dim: rgba(91, 141, 239, 0.12);
+      --accent-glow: rgba(91, 141, 239, 0.25);
+      --card-bg: #111720;
+      --card-border: rgba(255,255,255,0.05);
+      --border-subtle: rgba(255,255,255,0.07);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
@@ -55,29 +56,29 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Subtle background grain */
+    /* Subtle top glow */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(240,192,64,0.03) 0%, transparent 60%);
+      background: radial-gradient(ellipse at 50% 0%, rgba(91,141,239,0.04) 0%, transparent 55%);
       pointer-events: none;
       z-index: 0;
     }
 
     /* ========== CUSTOM SCROLLBAR ========== */
     ::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
     }
     ::-webkit-scrollbar-track {
       background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.1);
       border-radius: 3px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.18);
     }
 
     /* ========== HEADER ========== */
@@ -86,37 +87,27 @@
       top: 0;
       z-index: 100;
       width: 100%;
-      padding: 16px 0;
-      background: rgba(10, 10, 15, 0.85);
-      backdrop-filter: blur(20px) saturate(1.4);
-      -webkit-backdrop-filter: blur(20px) saturate(1.4);
+      padding: 15px 0;
+      background: rgba(9, 11, 16, 0.88);
+      backdrop-filter: blur(20px) saturate(1.3);
+      -webkit-backdrop-filter: blur(20px) saturate(1.3);
       text-align: center;
-      border-bottom: 1px solid rgba(240, 192, 64, 0.2);
+      border-bottom: 1px solid rgba(91, 141, 239, 0.15);
       cursor: pointer;
       transition: var(--transition-fast);
     }
 
     header:hover {
-      border-bottom-color: rgba(240, 192, 64, 0.5);
+      border-bottom-color: rgba(91, 141, 239, 0.35);
     }
 
     header h1 {
       margin: 0;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 800;
       letter-spacing: 4px;
       text-transform: uppercase;
-      background: linear-gradient(135deg, var(--accent), #ffeaa7, var(--accent));
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 3s ease-in-out infinite;
-    }
-
-    @keyframes shimmer {
-      0%, 100% { background-position: 0% center; }
-      50% { background-position: 200% center; }
+      color: var(--accent);
     }
 
     /* ========== CONTAINER ========== */
@@ -126,18 +117,18 @@
       max-width: 1200px;
       width: 92%;
       margin: 0 auto;
-      padding: 30px 0 60px;
+      padding: 28px 0 60px;
     }
 
     /* ========== VIEW TRANSITIONS ========== */
     #view-home, #view-detail, #view-streaming {
-      animation: fadeSlideIn 0.35s ease-out;
+      animation: fadeSlideIn 0.3s ease-out;
     }
 
     @keyframes fadeSlideIn {
       from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(10px);
       }
       to {
         opacity: 1;
@@ -147,14 +138,14 @@
 
     /* ========== SECTION TITLE ========== */
     .section-title {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       color: var(--text-main);
     }
 
     .section-subtitle {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
       margin-bottom: 20px;
     }
@@ -162,10 +153,10 @@
     /* ========== HOME / ANIME GRID ========== */
     .anime-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 18px;
       padding: 0;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .anime-card {
@@ -186,15 +177,15 @@
       inset: 0;
       border-radius: var(--radius-md);
       opacity: 0;
-      background: linear-gradient(180deg, transparent 50%, rgba(240,192,64,0.08) 100%);
+      background: linear-gradient(180deg, transparent 55%, rgba(91,141,239,0.06) 100%);
       transition: opacity var(--transition-smooth);
       pointer-events: none;
     }
 
     .anime-card:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(240,192,64,0.08);
-      border-color: rgba(240, 192, 64, 0.15);
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.45), 0 0 15px rgba(91,141,239,0.06);
+      border-color: rgba(91, 141, 239, 0.12);
     }
 
     .anime-card:hover::after {
@@ -205,7 +196,7 @@
       width: 100%;
       aspect-ratio: 2 / 3;
       position: relative;
-      background: #0f0f1a;
+      background: #080c14;
       overflow: hidden;
     }
 
@@ -217,7 +208,7 @@
     }
 
     .anime-card:hover .anime-cover-wrapper img {
-      transform: scale(1.08);
+      transform: scale(1.06);
     }
 
     /* Gradient overlay on cover */
@@ -227,20 +218,20 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 50%;
-      background: linear-gradient(to top, rgba(22, 22, 42, 0.9), transparent);
+      height: 45%;
+      background: linear-gradient(to top, var(--card-bg), transparent);
       pointer-events: none;
     }
 
     .anime-info {
-      padding: 12px 14px 14px;
+      padding: 11px 13px 13px;
     }
 
     .anime-title {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      margin-bottom: 4px;
-      color: #fff;
+      margin-bottom: 3px;
+      color: var(--text-main);
       line-height: 1.3;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -249,7 +240,7 @@
     }
 
     .anime-genre {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       font-weight: 500;
     }
@@ -258,7 +249,7 @@
     @media (max-width: 600px) {
       .container {
         width: 95%;
-        padding: 20px 0 40px;
+        padding: 18px 0 36px;
       }
 
       .anime-grid {
@@ -267,19 +258,19 @@
       }
 
       .anime-info {
-        padding: 8px 10px 10px;
+        padding: 7px 9px 9px;
       }
 
       .anime-title {
-        font-size: 0.75rem;
+        font-size: 0.72rem;
       }
 
       .anime-genre {
-        font-size: 0.65rem;
+        font-size: 0.62rem;
       }
 
       header {
-        padding: 12px 0;
+        padding: 11px 0;
       }
 
       header h1 {
@@ -288,7 +279,7 @@
       }
 
       .section-title {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
       }
 
       .detail-layout {
@@ -297,7 +288,7 @@
       }
 
       .detail-poster-wrap {
-        width: 180px !important;
+        width: 170px !important;
       }
 
       .detail-info-wrap {
@@ -305,42 +296,42 @@
       }
 
       .player-anime-title {
-        font-size: 1.2rem !important;
+        font-size: 1.1rem !important;
       }
 
+      /* Tombol episode prev/next kecil di HP */
       .player-controls-bottom {
-        flex-direction: column;
         gap: 8px;
       }
 
       .player-controls-bottom .btn-action {
-        width: 100%;
-        text-align: center;
+        padding: 7px 12px;
+        font-size: 0.72rem;
       }
     }
 
     /* ========== BUTTONS ========== */
     .btn-action {
       background-color: var(--surface-color);
-      color: var(--text-main);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 10px 22px;
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      padding: 9px 20px;
       border-radius: var(--radius-sm);
       cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       transition: all var(--transition-fast);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .btn-action:hover:not(:disabled) {
       background-color: var(--surface-hover);
       border-color: var(--accent);
       color: var(--accent);
-      box-shadow: 0 0 12px rgba(240, 192, 64, 0.1);
+      box-shadow: 0 0 10px rgba(91, 141, 239, 0.08);
     }
 
     .btn-action:active:not(:disabled) {
@@ -348,7 +339,7 @@
     }
 
     .btn-action:disabled {
-      opacity: 0.35;
+      opacity: 0.3;
       cursor: not-allowed;
     }
 
@@ -360,12 +351,12 @@
       padding: 8px 4px;
       cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       transition: all var(--transition-fast);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .btn-back:hover {
@@ -377,17 +368,18 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .player-header {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .player-anime-title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 700;
       line-height: 1.3;
+      color: var(--text-main);
     }
 
     .video-wrapper {
@@ -398,7 +390,7 @@
       overflow: hidden;
       box-shadow: var(--shadow-elevated);
       background-color: #000;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.04);
     }
 
     .plyr,
@@ -413,25 +405,25 @@
       width: 100% !important;
     }
 
-    /* Plyr accent color override */
+    /* Plyr accent color override -> biru */
     .plyr--full-ui input[type=range] {
       color: var(--accent) !important;
     }
 
     .plyr__control--overlaid {
       background: var(--accent) !important;
-      color: #000 !important;
+      color: #fff !important;
     }
 
     .plyr__control:hover {
       background: var(--accent) !important;
-      color: #000 !important;
+      color: #fff !important;
     }
 
     .player-controls-bottom {
       display: flex;
       justify-content: space-between;
-      margin-top: 16px;
+      margin-top: 14px;
       max-width: 960px;
       margin-left: auto;
       margin-right: auto;
@@ -440,9 +432,9 @@
     /* ========== SERVER BUTTONS ========== */
     .server-container {
       background-color: var(--surface-color);
-      padding: 14px 20px;
+      padding: 14px 18px;
       border-radius: var(--radius-md);
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid var(--border-subtle);
       max-width: 960px;
       margin-left: auto;
       margin-right: auto;
@@ -450,7 +442,7 @@
 
     .server-label {
       font-weight: 700;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -458,41 +450,41 @@
     }
 
     .server-btn {
-      background-color: rgba(255,255,255,0.05);
+      background-color: rgba(255,255,255,0.04);
       color: var(--text-muted);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 16px;
+      border: 1px solid var(--border-subtle);
+      padding: 7px 14px;
       border-radius: 6px;
       cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       transition: all var(--transition-fast);
     }
 
     .server-btn:hover {
-      background-color: rgba(255,255,255,0.1);
+      background-color: rgba(255,255,255,0.08);
       color: var(--text-main);
-      border-color: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.15);
     }
 
     .server-btn.active {
-      background: linear-gradient(135deg, var(--accent), #e6b800);
-      color: #000;
+      background: var(--accent);
+      color: #fff;
       border-color: var(--accent);
       font-weight: 700;
-      box-shadow: 0 0 12px rgba(240,192,64,0.25);
+      box-shadow: 0 0 10px rgba(91,141,239,0.2);
     }
 
     /* ========== DETAIL PAGE ========== */
     .detail-layout {
       display: flex;
-      gap: 30px;
+      gap: 28px;
       flex-wrap: wrap;
     }
 
     .detail-poster-wrap {
-      width: 220px;
+      width: 210px;
       flex-shrink: 0;
     }
 
@@ -502,33 +494,34 @@
       object-fit: cover;
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-card);
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid var(--border-subtle);
     }
 
     .detail-info-wrap {
       flex: 1;
-      min-width: 280px;
+      min-width: 270px;
     }
 
     .detail-anime-title {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 800;
-      margin: 0 0 8px;
+      margin: 0 0 6px;
       line-height: 1.2;
+      color: var(--text-main);
     }
 
     .detail-meta {
       color: var(--accent);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      margin-bottom: 24px;
-      opacity: 0.9;
+      margin-bottom: 22px;
+      opacity: 0.85;
     }
 
     .episode-list-title {
-      font-size: 1rem;
+      font-size: 0.88rem;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -537,7 +530,7 @@
     .episode-list-scroll {
       max-height: 420px;
       overflow-y: auto;
-      padding-right: 6px;
+      padding-right: 4px;
     }
 
     /* Episode Button */
@@ -546,14 +539,14 @@
       align-items: center;
       gap: 10px;
       width: 100%;
-      padding: 12px 16px;
-      margin-bottom: 6px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
+      padding: 11px 14px;
+      margin-bottom: 5px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       color: var(--text-main);
       font-family: 'Inter', sans-serif;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       transition: all var(--transition-fast);
@@ -562,18 +555,18 @@
 
     .ep-btn:hover {
       background: var(--accent-dim);
-      border-color: rgba(240, 192, 64, 0.25);
+      border-color: rgba(91, 141, 239, 0.2);
       color: var(--accent);
     }
 
     .ep-btn.watched {
       color: var(--text-muted);
-      opacity: 0.55;
+      opacity: 0.5;
       font-weight: 500;
     }
 
     .ep-btn.watched:hover {
-      opacity: 0.8;
+      opacity: 0.75;
     }
 
     .ep-icon {
@@ -584,7 +577,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
     }
 
     .ep-icon.play {
@@ -593,19 +586,14 @@
     }
 
     .ep-icon.check {
-      background: rgba(100, 116, 139, 0.2);
-      color: #64748b;
+      background: rgba(107, 122, 144, 0.15);
+      color: var(--text-muted);
     }
 
     .ep-no-data {
       color: var(--text-muted);
       font-style: italic;
-      padding: 16px 0;
-    }
-
-    /* ========== FOOTER SPACER ========== */
-    .footer-space {
-      height: 40px;
+      padding: 14px 0;
     }
   </style>
 </head>
@@ -647,8 +635,8 @@
       </div>
 
       <div class="player-controls-bottom">
-        <button id="btn-prev" class="btn-action" onclick="playPrevEpisode()">⏮ Episode Sebelumnya</button>
-        <button id="btn-next" class="btn-action" onclick="playNextEpisode()">Episode Selanjutnya ⏭</button>
+        <button id="btn-prev" class="btn-action" onclick="playPrevEpisode()">⏮ Sebelumnya</button>
+        <button id="btn-next" class="btn-action" onclick="playNextEpisode()">Selanjutnya ⏭</button>
       </div>
 
       <!-- Container Tombol Pilihan Server -->
@@ -671,6 +659,7 @@
     let currentAnimeId = null;
     let currentEpisodeIndex = null;
     let player = null; // Instance Plyr
+    let isNavigating = false; // Flag agar pushState tidak konflik dengan popstate
 
     // ==========================================
     // 1. FUNGSI RENDER MENU UTAMA (HOME)
@@ -702,6 +691,9 @@
       currentAnimeId = animeId;
       localStorage.setItem('currentAnimeId', animeId);
       localStorage.removeItem('lastViewedEpisode');
+      
+      // Push state ke browser history agar tombol back HP bekerja
+      history.pushState({ view: 'view-detail', animeId: animeId }, '', '#detail');
       
       showView('view-detail');
       renderDetail(animeId);
@@ -761,6 +753,9 @@
       localStorage.setItem('lastViewedEpisode', episodeIndex);
       localStorage.setItem('currentView', 'view-streaming');
       
+      // Push state ke browser history agar tombol back HP bekerja
+      history.pushState({ view: 'view-streaming', animeId: currentAnimeId, episodeIndex: episodeIndex }, '', '#streaming');
+      
       showView('view-streaming');
       
       const anime = ANIME_CATALOG.find(a => a.id === currentAnimeId);
@@ -810,6 +805,7 @@
       document.getElementById('view-streaming').style.display = viewId === 'view-streaming' ? 'block' : 'none';
       
       localStorage.setItem('currentView', viewId);
+      window.scrollTo(0, 0);
     }
 
     function navigateToHome() {
@@ -818,12 +814,19 @@
       
       currentAnimeId = null;
       currentEpisodeIndex = null;
+      
+      // Push state home
+      history.pushState({ view: 'view-home' }, '', '#');
+      
       showView('view-home');
     }
 
     function navigateToDetail() {
       localStorage.removeItem('lastViewedEpisode');
       if (player) player.pause();
+      
+      // Push state detail
+      history.pushState({ view: 'view-detail', animeId: currentAnimeId }, '', '#detail');
       
       showView('view-detail');
       if (currentAnimeId) renderDetail(currentAnimeId);
@@ -881,10 +884,42 @@
     }
 
     // ==========================================
-    // 4. INSIALISASI ONLOAD
+    // 4. BROWSER BACK BUTTON HANDLER (popstate)
+    // ==========================================
+    window.addEventListener('popstate', function(event) {
+      const state = event.state;
+
+      if (state && state.view === 'view-streaming' && state.animeId && state.episodeIndex !== undefined) {
+        // Kembali ke streaming
+        currentAnimeId = state.animeId;
+        currentEpisodeIndex = state.episodeIndex;
+        showView('view-streaming');
+      } else if (state && state.view === 'view-detail' && state.animeId) {
+        // Kembali ke detail anime
+        if (player) player.pause();
+        currentAnimeId = state.animeId;
+        localStorage.removeItem('lastViewedEpisode');
+        showView('view-detail');
+        renderDetail(state.animeId);
+      } else {
+        // Kembali ke home
+        if (player) player.pause();
+        localStorage.removeItem('currentAnimeId');
+        localStorage.removeItem('lastViewedEpisode');
+        currentAnimeId = null;
+        currentEpisodeIndex = null;
+        showView('view-home');
+      }
+    });
+
+    // ==========================================
+    // 5. INISIALISASI ONLOAD
     // ==========================================
     window.onload = function() {
       renderHome();
+
+      // Set initial state di history
+      history.replaceState({ view: 'view-home' }, '', '#');
 
       const savedView = localStorage.getItem('currentView');
       const savedAnimeId = localStorage.getItem('currentAnimeId');
@@ -892,10 +927,12 @@
 
       if (savedView === 'view-streaming' && savedAnimeId && savedEpisodeIndex !== null) {
         currentAnimeId = savedAnimeId;
+        history.pushState({ view: 'view-detail', animeId: savedAnimeId }, '', '#detail');
         renderDetail(savedAnimeId);
         startStreaming(parseInt(savedEpisodeIndex, 10));
       } else if (savedView === 'view-detail' && savedAnimeId) {
         currentAnimeId = savedAnimeId;
+        history.pushState({ view: 'view-detail', animeId: savedAnimeId }, '', '#detail');
         showView('view-detail');
         renderDetail(savedAnimeId);
       } else {
