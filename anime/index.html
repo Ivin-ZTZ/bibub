@@ -211,26 +211,6 @@
       font-weight: bold;
     }
 
-    /* Custom Fullscreen tanpa memicu Notifikasi HP */
-.video-wrapper.custom-fullscreen {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 999999 !important;
-  background: #000 !important;
-}
-
-/* Jika HP dipegang Vertikal saat Fullscreen, Paksa Rotasi ke Landscape via CSS */
-@media screen and (orientation: portrait) {
-  .video-wrapper.custom-fullscreen {
-    width: 100vh !important;
-    height: 100vw !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) rotate(90deg) !important;
-    transform-origin: center !important;
   }
 }
   </style>
@@ -359,29 +339,11 @@
         seekTime: 5,
         clickToPlay: true,
         doubleClickDelay: 0,
-        // MATIKAN Native Fullscreen API agar tidak memicu notifikasi bawaan HP
-        fullscreen: { enabled: true, fallback: true, iosNative: false }
+        fullscreen: { enabled: true, fallback: true, iosNative: true }
       });
 
+      // Fitur Double Tap Skip 5 Detik
       const videoWrapper = document.querySelector('.video-wrapper');
-
-      // Intersepsi tombol Fullscreen Plyr
-      player.on('enterfullscreen', () => {
-        videoWrapper.classList.add('custom-fullscreen');
-        // Mencoba kunci rotasi layar jika diizinkan browser
-        if (screen.orientation && screen.orientation.lock) {
-          screen.orientation.lock('landscape').catch(() => {});
-        }
-      });
-
-      player.on('exitfullscreen', () => {
-        videoWrapper.classList.remove('custom-fullscreen');
-        if (screen.orientation && screen.orientation.unlock) {
-          screen.orientation.unlock();
-        }
-      });
-
-      // Event Double Tap Skip 5 Detik
       if (videoWrapper) {
         videoWrapper.addEventListener('dblclick', (e) => {
           e.preventDefault();
