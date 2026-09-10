@@ -552,4 +552,54 @@ const ANIME_CATALOG = [
       }
     ]
   },
+      {
+    id: "gundam-unicorn",
+    title: "Mobile Suit Gundam Unicorn",
+    meta: "Sci-Fi, Mecha, Action, Military • 2010 • Sunrise",
+    cover: "https://m.media-amazon.com/images/M/MV5BNDQxYjYyMTgtZDZiZi00ZjhmLWFmOTEtYzI4M2Q0YWMyNWQ5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+    episodes: [
+      {
+        title: "Episode 01 - Day of the Unicorn",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1yAO6YHIWLH5ygmbnkpKzzEJumhG3Wwk7" }
+        ]
+      },
+      {
+        title: "Episode 02 - The Second Coming",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1PMafdrc6IJcogvodfqQD6MkTQYjsfGoo" }
+        ]
+      },
+      {
+        title: "Episode 03 - The Ghost of Laplace",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1PzAzCRKHx0xW_LIUZ6AneIbTdd7XDRhW" }
+        ]
+      },
+      {
+        title: "Episode 04 - At the Bottom of the Gravity Well",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1QBxFmdBrPssLCThb-qwgsSGu-2JE-FJY" }
+        ]
+      },
+      {
+        title: "Episode 05 - Laplaces Ghost",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1m-18MqUSCLQRlPLNB_Fhp_hf_sDxWyCh" }
+        ]
+      },
+      {
+        title: "Episode 06 - Two Worlds, Two Tomorrows",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1_ri3PgKB01KA8UidJeMNKg4lf_lzZBu2" }
+        ]
+      },
+      {
+        title: "Episode 07 - Over the Rainbow",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1jK9VeZSaCbLr7lZK_oxhpefJ0ohguq5D" }
+        ]
+      }
+    ]
+  },
     ];
