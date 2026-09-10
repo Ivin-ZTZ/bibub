@@ -476,7 +476,7 @@ const ANIME_CATALOG = [
     id: "gundam-08th-ms-team",
     title: "Mobile Suit Gundam: The 08th MS Team",
     meta: "Sci-Fi, Mecha, Military, Romance • 1996 • Sunrise",
-    cover: "https://cdn.myanimelist.net/images/anime/11/73618.jpg",
+    cover: "https://m.media-amazon.com/images/M/MV5BMTgwYWMzMjMtZjIwNi00YjkyLTg2ZmItYzg3MDM2YjFmZjFjXkEyXkFqcGc@._V1_.jpg",
     episodes: [
       {
         title: "Episode 01 - War for Two",
