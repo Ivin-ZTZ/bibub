@@ -472,4 +472,84 @@ const ANIME_CATALOG = [
       }
     ]
   },
+      {
+    id: "gundam-08th-ms-team",
+    title: "Mobile Suit Gundam: The 08th MS Team",
+    meta: "Sci-Fi, Mecha, Military, Romance • 1996 • Sunrise",
+    cover: "https://cdn.myanimelist.net/images/anime/11/73618.jpg",
+    episodes: [
+      {
+        title: "Episode 01 - War for Two",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-01.mp4" }
+        ]
+      },
+      {
+        title: "Episode 02 - Gundams in the Jungle",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-02.mp4" }
+        ]
+      },
+      {
+        title: "Episode 03 - Time Limit on Trust",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-03.mp4" }
+        ]
+      },
+      {
+        title: "Episode 04 - The Demon Above",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-04.mp4" }
+        ]
+      },
+      {
+        title: "Episode 05 - The Duty of an Officer",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-05.mp4" }
+        ]
+      },
+      {
+        title: "Episode 06 - Battle Line in the Burning Sand",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-06.mp4" }
+        ]
+      },
+      {
+        title: "Episode 07 - Reunion",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-07.mp4" }
+        ]
+      },
+      {
+        title: "Episode 08 - Duty and Honor",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-08.mp4" }
+        ]
+      },
+      {
+        title: "Episode 09 - Front Line",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-09.mp4" }
+        ]
+      },
+      {
+        title: "Episode 10 - The Shuddering Mountain (Part 1)",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-10.mp4" }
+        ]
+      },
+      {
+        title: "Episode 11 - The Shuddering Mountain (Part 2)",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-11.mp4" }
+        ]
+      },
+      {
+        title: "Episode 12 - Last Resort (Epilogue)",
+        sources: [
+          { name: "Server 1 (Cloudflare R2)", url: "https://pub-9b83e47268034ed58bfb6db944212de9.r2.dev/msg-08team/gundam-08th-ms-team-12.mp4" }
+        ]
+      }
+    ]
+  },
     ];
