@@ -602,4 +602,18 @@ const ANIME_CATALOG = [
       }
     ]
   },
+      {
+    id: "gundam-narrative",
+    title: "Mobile Suit Gundam Narrative",
+    meta: "Sci-Fi, Mecha, Action, Movie • 2018 • Sunrise",
+    cover: "https://gundam-official.com/media/NT_KV_01_with_logo_comp_12d9c18222/NT_KV_01_with_logo_comp_12d9c18222.png",
+    episodes: [
+      {
+        title: "Movie - Mobile Suit Gundam NT",
+        sources: [
+          { name: "Server 1 (GDrive 480p)", fileId: "1Esz0LfV5KesixIABp_wK47Ci6Fx8R8t_" }
+        ]
+      }
+    ]
+  },
     ];
