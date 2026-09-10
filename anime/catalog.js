@@ -611,7 +611,7 @@ const ANIME_CATALOG = [
       {
         title: "Movie - Mobile Suit Gundam NT",
         sources: [
-          { name: "Server 1 (GDrive 480p)", fileId: "1Esz0LfV5KesixIABp_wK47Ci6Fx8R8t_" }
+          { name: "Server 1", fileId: "1Esz0LfV5KesixIABp_wK47Ci6Fx8R8t_" }
         ]
       }
     ]
