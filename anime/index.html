@@ -235,6 +235,14 @@
     }
     .plyr, .plyr__video-wrapper, video { -webkit-tap-highlight-color: transparent !important; outline: none !important; }
     .plyr { border-radius: var(--radius-lg); width: 100% !important; }
+    .plyr--fullscreen-active {
+      border-radius: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+    }
+    .plyr--fullscreen-active video {
+      object-fit: contain !important;
+    }
     .plyr--full-ui input[type=range] { color: var(--accent) !important; }
     .plyr__control--overlaid { background: var(--accent) !important; color: #fff !important; }
     .plyr__control:hover { background: var(--accent) !important; color: #fff !important; }
@@ -547,12 +555,102 @@
       player.play().catch(err => console.log("Autoplay dicegah browser:", err));
     }
 
+    // ==========================================
+    // ORIENTATION HELPER (HORIZONTAL ON FULLSCREEN)
+    // ==========================================
+    async function lockLandscape() {
+      try {
+        if (screen.orientation && typeof screen.orientation.lock === 'function') {
+          await screen.orientation.lock('landscape');
+        } else if (screen.lockOrientation) {
+          screen.lockOrientation('landscape');
+        } else if (screen.mozLockOrientation) {
+          screen.mozLockOrientation('landscape');
+        } else if (screen.msLockOrientation) {
+          screen.msLockOrientation('landscape');
+        }
+      } catch (err) {
+        console.warn('Orientation lock notice:', err);
+      }
+    }
+
+    function unlockOrientation() {
+      try {
+        if (screen.orientation && typeof screen.orientation.unlock === 'function') {
+          screen.orientation.unlock();
+        } else if (screen.unlockOrientation) {
+          screen.unlockOrientation();
+        } else if (screen.mozUnlockOrientation) {
+          screen.mozUnlockOrientation();
+        } else if (screen.msUnlockOrientation) {
+          screen.msUnlockOrientation();
+        }
+      } catch (err) {
+        console.warn('Orientation unlock notice:', err);
+      }
+    }
+
     function initPlyr() {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      const videoEl = document.getElementById('main-player');
+
       player = new Plyr('#main-player', {
         controls: ['play-large', 'play', 'progress', 'current-time', 'duration', 'settings', 'pip', 'fullscreen'],
         seekTime: 5, clickToPlay: true, doubleClickDelay: 0,
         fullscreen: { enabled: true, fallback: true, iosNative: true }
       });
+
+      // ---- AUTO HORIZONTAL / LANDSCAPE SAAT FULLSCREEN ----
+      player.on('enterfullscreen', () => {
+        lockLandscape();
+        setTimeout(lockLandscape, 100);
+      });
+
+      player.on('exitfullscreen', () => {
+        unlockOrientation();
+      });
+
+      // Event listener tingkat dokumen untuk rotasi otomatis
+      document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+          lockLandscape();
+          setTimeout(lockLandscape, 100);
+        } else {
+          unlockOrientation();
+        }
+      });
+      document.addEventListener('webkitfullscreenchange', () => {
+        if (document.webkitFullscreenElement) {
+          lockLandscape();
+          setTimeout(lockLandscape, 100);
+        } else {
+          unlockOrientation();
+        }
+      });
+
+      // Deteksi klik tombol fullscreen untuk pemicu orientasi instan
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-plyr="fullscreen"]');
+        if (btn && (!player || !player.fullscreen || !player.fullscreen.active)) {
+          setTimeout(lockLandscape, 50);
+          setTimeout(lockLandscape, 200);
+        }
+      }, true);
+
+      // Khusus iOS / iPhone agar rotasi otomatis aktif via player native
+      if (isIOS && videoEl) {
+        player.on('enterfullscreen', () => {
+          if (typeof videoEl.webkitEnterFullscreen === 'function') {
+            videoEl.webkitEnterFullscreen();
+          }
+        });
+        videoEl.addEventListener('webkitendfullscreen', () => {
+          unlockOrientation();
+          if (player && player.fullscreen && player.fullscreen.active) {
+            player.fullscreen.exit();
+          }
+        });
+      }
 
       // Double Tap Skip 5s
       const videoWrapper = document.querySelector('.video-wrapper');
@@ -706,6 +804,10 @@
     }
 
     function navigateToHome() {
+      if (player && player.fullscreen && player.fullscreen.active) {
+        player.fullscreen.exit();
+      }
+      unlockOrientation();
       localStorage.removeItem('currentAnimeId');
       localStorage.removeItem('lastViewedEpisode');
       currentAnimeId = null;
@@ -719,6 +821,10 @@
     }
 
     function navigateToDetail() {
+      if (player && player.fullscreen && player.fullscreen.active) {
+        player.fullscreen.exit();
+      }
+      unlockOrientation();
       localStorage.removeItem('lastViewedEpisode');
       if (player) player.pause();
       cancelAutoplay();
@@ -813,6 +919,10 @@
     // 5. BROWSER BACK BUTTON (popstate)
     // ==========================================
     window.addEventListener('popstate', function(event) {
+      if (player && player.fullscreen && player.fullscreen.active) {
+        player.fullscreen.exit();
+      }
+      unlockOrientation();
       cancelAutoplay();
       const state = event.state;
 
